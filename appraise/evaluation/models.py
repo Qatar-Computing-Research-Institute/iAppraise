@@ -32,6 +32,7 @@ APPRAISE_TASK_TYPE_CHOICES = (
   ('3', 'Post-editing'),
   ('4', 'Error classification'),
   ('5', '3-Way Ranking'),
+  ('6', 'Eyetracking game'),
 )
 
 
@@ -249,6 +250,9 @@ class EvaluationTask(models.Model):
         
         elif _task_type == '3-Way Ranking':
             pass
+
+        elif _task_type == 'Eyetracking game':
+            pass
         
         return _header
     
@@ -298,6 +302,9 @@ class EvaluationTask(models.Model):
             pass
         
         elif _task_type == '3-Way Ranking':
+            pass
+
+        elif _task_type == 'Eyetracking game':
             pass
         
         return _status
@@ -456,7 +463,11 @@ class EvaluationItem(models.Model):
     # These fields are derived from item_xml and NOT stored in the database.
     attributes = None
     source = None
+    source0 = None
+    source1 = None
     reference = None
+    reference0 = None
+    reference1 = None
     translations = None
     
     class Meta:
@@ -504,19 +515,36 @@ class EvaluationItem(models.Model):
                 _source = _item_xml.find('source')
                 if _source is not None:
                     self.source = (_source.text, _source.attrib)
+                _source = _item_xml.find('source0')
+                if _source is not None:
+                    self.source0 = (_source.text, _source.attrib)
+                _source = _item_xml.find('source1')
+                if _source is not None:
+                    self.source1 = (_source.text, _source.attrib)
+
 
                 _reference = _item_xml.find('reference')
                 if _reference is not None:
                     self.reference = (_reference.text, _reference.attrib)
-                
+                _reference = _item_xml.find('reference0')
+                if _reference is not None:
+                    self.reference0 = (_reference.text, _reference.attrib)
+                _reference = _item_xml.find('reference1')
+                if _reference is not None:
+                    self.reference1 = (_reference.text, _reference.attrib)
                 self.translations = []
+
                 for _translation in _item_xml.iterfind('translation'):
                     self.translations.append((_translation.text,
                       _translation.attrib))
             
             except ParseError:
                 self.source = None
+                self.source1 = None
+                self.source0 = None
                 self.reference = None
+                self.reference0 = None
+                self.reference1 = None
                 self.translations = None
 
 
@@ -592,6 +620,9 @@ class EvaluationResult(models.Model):
                 
                 elif _task_type == '3-Way Ranking':
                     self.results = self.raw_result
+
+                elif _task_type == 'Eyetracking game':
+                    self.results = self.raw_result
             
             # pylint: disable-msg=W0703
             except Exception, msg:
@@ -616,6 +647,9 @@ class EvaluationResult(models.Model):
         
         elif _task_type == '3-Way Ranking':
             return self.export_to_three_way_ranking_xml()
+
+        elif _task_type == 'Eyetracking game':
+            return self.export_to_quality_checking_xml()
     
     def export_to_quality_checking_xml(self):
         """

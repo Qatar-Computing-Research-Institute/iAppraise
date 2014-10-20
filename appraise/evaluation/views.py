@@ -107,7 +107,33 @@ def _find_next_item_to_process(items, user, random_order=False):
     
     return None
 
+def _compute_explicit_context_for_item(item):
+    """
+    Computes the source and reference texts for item, including context.
+    
+    Left/right context is displayed from explicit context.
+    
+    """
+    source_text = [None, None, None]
+    reference_text = [None, None, None]
+    
+    
+    # Item text and, if available, reference text are always set.
+    source_text[1] = item.source[0]
+    reference_text[1] = item.reference[0]
 
+    if (item.source0[0]):
+         source_text[0] = item.source0[0]
+    if (item.source1[0]):
+         source_text[2] = item.source1[0]
+    if (item.reference0[0]):
+         reference_text[0] = item.reference0[0]
+    if (item.reference1[0]):
+         reference_text[2] = item.reference1[0]
+             
+
+    
+    return (source_text, reference_text)
 def _compute_context_for_item(item):
     """
     Computes the source and reference texts for item, including context.
@@ -221,6 +247,76 @@ def _handle_quality_checking(request, task, items):
     
     return render(request, 'evaluation/quality_checking.html', dictionary)
 
+def _handle_eyetracking(request, task, items):
+    """
+    Handler for Eyetracking game tasks.
+    
+    Finds the next item belonging to the given task, renders the page template
+    and creates an EvaluationResult instance on HTTP POST submission.
+    
+    """
+    start_datetime = datetime.now()
+    form_valid = False
+    
+    # If the request has been submitted via HTTP POST, extract data from it.
+    if request.method == "POST":
+        item_id = request.POST.get('item_id', None)
+        now_timestamp = request.POST.get('now', None)
+        submit_button = request.POST.get('submit_button', None)
+        
+        # The form is only valid if all variables could be found.
+        form_valid = all((item_id, now_timestamp, submit_button))
+    
+    # If the form is valid, we have to save the results to the database.
+    if form_valid:
+        # Retrieve EvalutionItem instance for the given id or raise Http404.
+        current_item = get_object_or_404(EvaluationItem, pk=int(item_id))
+        
+        # Compute duration for this item.
+        now_datetime = datetime.fromtimestamp(float(now_timestamp))
+        duration = start_datetime - now_datetime
+        
+        # If "Flag Error" was clicked, _raw_result is set to "SKIPPED".
+        if submit_button == 'FLAG_ERROR':
+            _raw_result = 'SKIPPED'
+        
+        # Otherwise, for quality checking, we just pass through the value.
+        else:
+            _raw_result = submit_button
+        
+        # Save results for this item to the Django database.
+        _save_results(current_item, request.user, duration, _raw_result)
+    
+    # Find next item the current user should process or return to overview.
+    item = _find_next_item_to_process(items, request.user, task.random_order)
+    if not item:
+        return redirect('appraise.evaluation.views.overview')
+    
+    # Compute source and reference texts including context where possible.
+    source_text, reference_text = _compute_explicit_context_for_item(item)
+    
+    # Retrieve the number of finished items for this user and the total number
+    # of items for this task. We increase finished_items by one as we are
+    # processing the first unfinished item.
+    finished_items, total_items = task.get_finished_for_user(request.user)
+    finished_items += 1
+    
+    dictionary = {
+      'action_url': request.path,
+      'commit_tag': COMMIT_TAG,
+      'description': task.description,
+      'game_type': item.attributes['game_type'],
+      'item_id': item.id,
+      'now': mktime(datetime.now().timetuple()),
+      'reference_text': reference_text,
+      'source_text': source_text,
+      'hscore': item.translations[0][1]['hscore'],
+      'task_progress': '{0:03d}/{1:03d}'.format(finished_items, total_items),
+      'title': 'eyetracking game',
+      'translation': item.translations[0],
+    }
+    
+    return render(request, 'evaluation/eyetracking.html', dictionary)
 
 @login_required
 def _handle_ranking(request, task, items):
@@ -616,6 +712,9 @@ def task_handler(request, task_id):
     
     elif _task_type == '3-Way Ranking':
         return _handle_three_way_ranking(request, task, items)
+
+    elif _task_type == 'Eyetracking game':
+        return _handle_eyetracking(request, task, items)
     
     _msg = 'No handler for task type: "{0}"'.format(_task_type)
     raise NotImplementedError, _msg
