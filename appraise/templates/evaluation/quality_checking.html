@@ -1,6 +1,15 @@
+
 {% extends "base.html" %}
 
+
 {% block content %}
+
+
+<div id="container">
+    <div id="canvasWrapper" style="position:fixed; top:40px; right: 900px;">
+        <canvas id="myCanvas" width="100" height="100" style="opacity: 0.4;" style="border:1px solid #ffe629;"><p>Your browser doesn't support canvas.</p></canvas>
+    </div>
+</div>
 
 <div class="alert alert-info">
   <strong id="task_progress">{{task_progress}}</strong>
@@ -17,20 +26,20 @@
 
 <div class="row">
 {% if reference_text.1 %}
-<div class="span5">
+<div class="span5" id="divsrc" style="border:1px solid black;">
 <blockquote>
 <p>{% if source_text.0 %}{{source_text.0}} {% endif %}<strong>{{source_text.1}}</strong>{% if source_text.2 %} {{source_text.2}}{% endif %}</p>
 <small>Source</small>
 </blockquote>
 </div>
-<div class="span5 offset1">
+<div class="span5 offset1" id="divref" style="border:1px solid black;">
 <blockquote>
 <p>{% if reference_text.0 %}{{reference_text.0}} {% endif %}<strong>{{reference_text.1}}</strong>{% if reference_text.2 %} {{reference_text.2}}{% endif %}</p>
 <small>Reference</small>
 </blockquote>
 </div>
 {% else %}
-<div class="span12">
+<div class="span12" id="divsrc" style="border:1px solid black;">
 <blockquote>
 <p>{% if source_text.0 %}{{source_text.0}} {% endif %}<strong>{{source_text.1}}</strong>{% if source_text.2 %} {{source_text.2}}{% endif %}</p>
 <small>Source</small>
@@ -45,7 +54,7 @@
 <input name="now" type="hidden" value="{{now}}" />
 
 <div class="row">
-<div class="span11">
+<div class="span11" id="divtrn" style="border:1px solid black;">
 <blockquote>
 <p><strong>{{translation.0}}</strong></p>
 <small>Translation</small>
@@ -54,6 +63,27 @@
 </div>
 
 <div class="actions">
+
+<!--  slider css/js-->
+
+<input data-slider="true" value="50" data-slider-range="0,100" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"/>
+ <script>
+  $("[data-slider]")
+    .each(function () {
+      var input = $(this);
+      $("<span>")
+        .addClass("output")
+        .insertAfter($(this));
+    })
+    .bind("slider:ready slider:changed", function (event, data) {
+      $(this)
+        .nextAll(".output:first")
+          .html(data.value.toFixed(0));
+    });
+  </script>
+
+  <br/>
+
   <button class="btn" name="submit_button" accesskey="1" type="submit" value="ACCEPTABLE"><i class="icon-ok"></i> Acceptable</button>
   &nbsp;
   
