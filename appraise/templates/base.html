@@ -1,3 +1,4 @@
+
 {% with bootstrap_url="http://getbootstrap.com/2.3.2" %}
 <!DOCTYPE html>
 <html lang="en">
@@ -17,12 +18,123 @@
         padding-bottom: 40px;
       }
     </style>
+
+
+    <!-- -->
     <link href="{{bootstrap_url}}/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://192.168.0.107:8080/socket.io/socket.io.js"></script>
+    <script>
+        var activeRegion = 0;
+        var timeRegion = 0;
+        $(function(){
+            var iosocket = io.connect('http://192.168.0.107:8080');
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext('2d');
+
+            var myCanvasDraw = function( col ){
+                    ctx.fillStyle= col ;
+                    ctx.beginPath();
+                    ctx.arc(50,50,50,0,2*Math.PI);
+                    ctx.fillStyle= col ; 
+                    ctx.fill(); 
+            };
+
+
+            iosocket.on('connect', function () {
+                $('#incomingChatMessages').append($('<li>Connected</li>'));
+ 
+                iosocket.on('message', function(message) {
+                    //$('#incomingChatMessages').append($('<li></li>').text(message));
+                    var curRegion  = "Out";
+                    var curRegionColor = "#ffe629";
+
+                    var obj = jQuery.parseJSON( message );
+                    var curTime = new Date().getTime();
+                    if( obj != null) {
+                        var d = document.getElementById("canvasWrapper");
+                        d.style.left = (obj.x-50)+ 'px';
+                        d.style.top = (obj.y-50 -1)+ 'px';
+                        //ctx.canvas.left = obj.x+ 'px';
+                        //ctx.canvas.top = obj.y+ 'px';
+                        
+                        possrc = $("#divsrc").position();
+                        posref = $("#divref").position();
+                        postrn = $("#divtrn").position();
+
+                        if(typeof(possrc) !== "undefined") 
+                          if(possrc.top<(obj.y) && (possrc.top+$("#divsrc").height())>(obj.y) && possrc.left<(obj.x) && (possrc.left+$("#divsrc").width())>(obj.x)) {
+                            //console.log("src,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Src";
+                            curRegionColor = "#ff5b4c";
+                          }
+
+                        if(typeof(posref) !== "undefined") 
+                          if(posref.top<(obj.y) && (posref.top+$("#divref").height())>(obj.y) && posref.left<(obj.x) && (posref.left+$("#divref").width())>(obj.x)) {
+                            //console.log("ref,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Ref";
+                            curRegionColor = "#67ff3d";
+                          }
+
+                        if(typeof(postrn) !== "undefined") 
+                          if(postrn.top<(obj.y) && (postrn.top+$("#divtrn").height())>(obj.y) && postrn.left<(obj.x) && (postrn.left+$("#divtrn").width())>(obj.x)) {
+                            //console.log("trn,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Trn"
+                            curRegionColor = "#735dff";
+                          }
+                        
+                        if(curRegion === "Out"){
+                          //console.log("out,"+obj.x+","+obj.y+","+curTime);
+                          curRegion = "Out";
+                          timeRegion = curTime;
+                          curRegionColor = "#ffe629";
+                        }
+                        
+                        if(curRegion != activeRegion) {
+                          console.log($("#task_progress").text()+", Region:"+activeRegion+" time:"+curTime+", "+timeRegion+", "+(curTime-timeRegion));
+                          timeRegion = curTime;
+                          activeRegion = curRegion;
+                        }
+
+                        myCanvasDraw(curRegionColor);
+                        
+                  }
+                   
+                });
+
+                iosocket.on('disconnect', function() {
+                    //$('#incomingChatMessages').append('<li>Disconnected</li>');
+                });
+            });
+ 
+            $('#outgoingChatMessage').keypress(function(event) {
+                if(event.which == 13) {
+                    event.preventDefault();
+                    iosocket.send($('#outgoingChatMessage').val());
+                    //$('#incomingChatMessages').append($('<li></li>').text($('#outgoingChatMessage').val()));
+                    $('#outgoingChatMessage').val('');
+                }
+            });
+        });
+
+    </script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="{{bootstrap_url}}/assets/js/html5shiv.js"></script>
     <![endif]-->
+
+  <!-- slider css/js -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="{{ STATIC_URL }}js/simple-slider.js"></script>
+  <link href="{{ STATIC_URL }}css/simple-slider.css" rel="stylesheet" type="text/css" />
+  <link href="{{ STATIC_URL }}css/simple-slider-volume.css" rel="stylesheet" type="text/css" />  
+  
+  <style>
+   [class^=slider] { display: inline-block; margin-top: 3px; margin-bottom: 20px; }
+  .output { color: #888; font-size: 16px; padding-top: 1px; margin-left: 5px; vertical-align: top;}
+  </style>
+
 
     <!-- Fav and touch icons -->
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{bootstrap_url}}/assets/ico/apple-touch-icon-144-precomposed.png">
