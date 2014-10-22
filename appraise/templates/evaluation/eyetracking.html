@@ -40,7 +40,7 @@
 
 </div>
 
-<form action="{{action_url}}" method="post">
+<form action="{{action_url}}" method="post" id="myform">
 
 <input name="item_id" type="hidden" value="{{item_id}}" />
 <input name="now" type="hidden" value="{{now}}" />
@@ -56,7 +56,7 @@
 
 <div class="actions">
 <!--  slider css/js-->
- <input type="text" data-slider="true" value="50" data-slider-range="0,100" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"><span class="output"></span>
+ <input type="text" data-slider="true" value="50" data-slider-range="0,100" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"><span class="output" id="output"></span>
  <script>
   $("[data-slider]")
     .bind("slider:ready slider:changed", function (event, data) {
@@ -65,8 +65,10 @@
           .html(data.value.toFixed(0));
     });
   </script>
+<input id="eyedata" name="eyedata" type="hidden" value="" />
+<input id="sscore" name="sscore" type="hidden" value="" />
 
-<br> <button class="btn" name="submit_button" accesskey="1" type="submit" value="submit"><i class="icon-ok"></i> Submit</button> 
+<br> <button class="btn" name="submit_button" accesskey="1" type="button" value="submit" onClick="submitForm();"><i class="icon-ok"></i> Submit</button> 
   &nbsp;
 </div>
 

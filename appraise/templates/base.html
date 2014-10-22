@@ -27,6 +27,8 @@
     <script>
         var activeRegion = 0;
         var timeRegion = 0;
+        var eyeTribeData = [];
+
         $(function(){
             var iosocket = io.connect('http://192.168.0.107:8080');
             var c = document.getElementById("myCanvas");
@@ -126,7 +128,23 @@
 
   <!-- slider css/js -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script language="javascript">
+    // define the function within the global scope
+    var submitForm = function() {
+
+        eyeTribeData.push('{"task":"val"}');
+        eyeTribeData.push('{"task":"car"}');
+
+        $("#eyedata").val(eyeTribeData);
+        $("#sscore").val($("#output").text());
+        //alert("Score:"+$("#sscore").val());
+        //alert("Eye:"+$("#eyedata").val());
+         $("#myform").submit();
+    };
+
+  </script>
   <script src="{{ STATIC_URL }}js/simple-slider.js"></script>
+
   <link href="{{ STATIC_URL }}css/simple-slider.css" rel="stylesheet" type="text/css" />
   <link href="{{ STATIC_URL }}css/simple-slider-volume.css" rel="stylesheet" type="text/css" />  
   

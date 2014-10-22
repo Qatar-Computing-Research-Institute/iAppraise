@@ -263,9 +263,16 @@ def _handle_eyetracking(request, task, items):
         item_id = request.POST.get('item_id', None)
         now_timestamp = request.POST.get('now', None)
         submit_button = request.POST.get('submit_button', None)
-        
+ 
+        submit_eyedata = request.POST.get('eyedata', None)
+        submit_sscore = request.POST.get('sscore', None)
+
+        print("** Submit  : "+str(submit_button))
+        print("** Eyedata : "+str(submit_eyedata))
+        print("** Score   : "+str(submit_sscore))
+       
         # The form is only valid if all variables could be found.
-        form_valid = all((item_id, now_timestamp, submit_button))
+        form_valid = all((item_id, now_timestamp, submit_eyedata, submit_sscore))
     
     # If the form is valid, we have to save the results to the database.
     if form_valid:
@@ -282,7 +289,7 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = submit_button
+            _raw_result = '{"score":"'+str(submit_sscore) +'"},'+ str(submit_eyedata) # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)
