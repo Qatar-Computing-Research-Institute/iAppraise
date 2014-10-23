@@ -93,6 +93,8 @@
                         }
                         
                         if(curRegion != activeRegion) {
+                          
+                          eyeTribeData.push("{'task':'"+$("#task_progress").text()+"','Region':'"+activeRegion+"','time':'"+(curTime-timeRegion)+"'}");
                           console.log($("#task_progress").text()+", Region:"+activeRegion+" time:"+curTime+", "+timeRegion+", "+(curTime-timeRegion));
                           timeRegion = curTime;
                           activeRegion = curRegion;
@@ -132,8 +134,8 @@
     // define the function within the global scope
     var submitForm = function() {
 
-        eyeTribeData.push('{"task":"val"}');
-        eyeTribeData.push('{"task":"car"}');
+        //eyeTribeData.push('{"task":"val"}');
+        //eyeTribeData.push('{"task":"car"}');
 
         $("#eyedata").val(eyeTribeData);
         $("#sscore").val($("#output").text());
