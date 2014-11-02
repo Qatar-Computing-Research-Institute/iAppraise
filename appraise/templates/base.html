@@ -60,21 +60,53 @@
                         //ctx.canvas.left = obj.x+ 'px';
                         //ctx.canvas.top = obj.y+ 'px';
                         
-                        possrc = $("#divsrc").position();
-                        posref = $("#divref").position();
+                        possrc0 = $("#divsrc0").position();
+                        possrc1 = $("#divsrc1").position();
+                        possrc2 = $("#divsrc2").position();                        
+                        posref0 = $("#divref0").position();
+                        posref1 = $("#divref1").position();
+                        posref2 = $("#divref2").position();
                         postrn = $("#divtrn").position();
 
-                        if(typeof(possrc) !== "undefined") 
-                          if(possrc.top<(obj.y) && (possrc.top+$("#divsrc").height())>(obj.y) && possrc.left<(obj.x) && (possrc.left+$("#divsrc").width())>(obj.x)) {
+                        if(typeof(possrc0) !== "undefined") 
+                          if(possrc0.top<(obj.y) && (possrc0.top+$("#divsrc0").height())>(obj.y) && possrc0.left<(obj.x) && (possrc0.left+$("#divsrc0").width())>(obj.x)) {
                             //console.log("src,"+obj.x+","+obj.y+","+curTime);
-                            curRegion = "Src";
+                            curRegion = "Src0";
                             curRegionColor = "#ff5b4c";
                           }
 
-                        if(typeof(posref) !== "undefined") 
-                          if(posref.top<(obj.y) && (posref.top+$("#divref").height())>(obj.y) && posref.left<(obj.x) && (posref.left+$("#divref").width())>(obj.x)) {
+                        if(typeof(possrc1) !== "undefined") 
+                          if(possrc1.top<(obj.y) && (possrc1.top+$("#divsrc1").height())>(obj.y) && possrc1.left<(obj.x) && (possrc1.left+$("#divsrc1").width())>(obj.x)) {
+                            //console.log("src,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Src1";
+                            curRegionColor = "#ff5b4c";
+                          }
+
+                        if(typeof(possrc2) !== "undefined") 
+                          if(possrc2.top<(obj.y) && (possrc2.top+$("#divsrc2").height())>(obj.y) && possrc2.left<(obj.x) && (possrc2.left+$("#divsrc2").width())>(obj.x)) {
+                            //console.log("src,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Src2";
+                            curRegionColor = "#ff5b4c";
+                          }
+
+                        if(typeof(posref0) !== "undefined") 
+                          if(posref0.top<(obj.y) && (posref0.top+$("#divref0").height())>(obj.y) && posref0.left<(obj.x) && (posref0.left+$("#divref0").width())>(obj.x)) {
                             //console.log("ref,"+obj.x+","+obj.y+","+curTime);
-                            curRegion = "Ref";
+                            curRegion = "Ref0";
+                            curRegionColor = "#67ff3d";
+                          }
+
+                        if(typeof(posref1) !== "undefined") 
+                          if(posref1.top<(obj.y) && (posref1.top+$("#divref1").height())>(obj.y) && posref1.left<(obj.x) && (posref1.left+$("#divref1").width())>(obj.x)) {
+                            //console.log("ref,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Ref1";
+                            curRegionColor = "#67ff3d";
+                          }
+
+                        if(typeof(posref2) !== "undefined") 
+                          if(posref2.top<(obj.y) && (posref2.top+$("#divref2").height())>(obj.y) && posref2.left<(obj.x) && (posref2.left+$("#divref2").width())>(obj.x)) {
+                            //console.log("ref,"+obj.x+","+obj.y+","+curTime);
+                            curRegion = "Ref2";
                             curRegionColor = "#67ff3d";
                           }
 
