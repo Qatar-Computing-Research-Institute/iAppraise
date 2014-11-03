@@ -17,6 +17,7 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+      small{display:block;line-height:18px;color:#999999;}small:before{content:'\2014 \00A0';}
     </style>
 
 
@@ -55,8 +56,8 @@
                     var curTime = new Date().getTime();
                     if( obj != null) {
                         var d = document.getElementById("canvasWrapper");
-                        d.style.left = (obj.x-50)+ 'px';
-                        d.style.top = (obj.y-50 -1)+ 'px';
+                        d.style.left = (obj.x-50-50)+ 'px';
+                        d.style.top = (obj.y-50-50 -1)+ 'px';
                         //ctx.canvas.left = obj.x+ 'px';
                         //ctx.canvas.top = obj.y+ 'px';
                         
