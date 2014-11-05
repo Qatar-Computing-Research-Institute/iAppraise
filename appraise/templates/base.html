@@ -177,19 +177,19 @@
         $("#sscore").val($("#output").text());
         var eval = Math.round(Math.abs($("#sscore").val() - $("#oscore").val())/10);
         switch (eval) {
-        case 0: $("#cd_popup_message").text("Your Score is great! The actual score is "+$("#oscore").val());
+        case 0: $("#cd_popup_message").text("Your Score is great! The actual score is "+Math.round($("#oscore").val()));
           break;
-        case 1: $("#cd_popup_message").text("Your Score is good. The actual score is "+$("#oscore").val());
+        case 1: $("#cd_popup_message").text("Your Score is good. The actual score is "+Math.round($("#oscore").val()));
           break;
-        case 2: $("#cd_popup_message").text("Your Score is Okay. The actual score is "+$("#oscore").val());
+        case 2: $("#cd_popup_message").text("Your Score is Okay. The actual score is "+Math.round($("#oscore").val()));
           break;
-        case 3: $("#cd_popup_message").text("Are you allright!. The actual score is "+$("#oscore").val());
+        case 3: $("#cd_popup_message").text("Are you allright!. The actual score is "+Math.round($("#oscore").val()));
           break;
-        case 4: $("#cd_popup_message").text("Did you had your breakfast!!. The actual score is "+$("#oscore").val());
+        case 4: $("#cd_popup_message").text("Did you have your breakfast today!!. The actual score is "+Math.round($("#oscore").val()));
           break;
-        case 5: $("#cd_popup_message").text("Are you insane!!!. The actual score is "+$("#oscore").val());
+        case 5: $("#cd_popup_message").text("Are you insane, you are missing it!!!. The actual score is "+Math.round($("#oscore").val()));
           break;
-        default: $("#cd_popup_message").text("Your are loosing it!!! The actual score is "+$("#oscore").val());
+        default: $("#cd_popup_message").text("Your are loosing it!!! The actual score is "+Math.round($("#oscore").val()));
       }
         $('.cd-popup').addClass('is-visible');
 
