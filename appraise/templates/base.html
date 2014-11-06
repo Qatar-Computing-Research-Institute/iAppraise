@@ -29,6 +29,7 @@
         var activeRegion = 0;
         var timeRegion = 0;
         var eyeTribeData = [];
+        var eyeTribeActive = 0;
 
         $(function(){
             var iosocket = io.connect('http://192.168.0.107:8080');
@@ -133,7 +134,8 @@
                           activeRegion = curRegion;
                         }
 
-                        myCanvasDraw(curRegionColor);
+                        if (eyeTribeActive)
+                          myCanvasDraw(curRegionColor);
                         
                   }
                    
@@ -202,6 +204,21 @@
       };
     }
 
+    var ChangeStatus = function() {
+
+      if (eyeTribeActive) {
+
+        eyeTribeActive = 0;
+        $("#updateEyeTrack").text("EyeTracking Off");
+
+      } else {
+
+        eyeTribeActive = 1;
+        $("#updateEyeTrack").text("EyeTracking On");
+      }
+
+    }
+
   </script>
   <script src="{{ STATIC_URL }}js/simple-slider.js"></script>
 
@@ -261,6 +278,7 @@
 {% endif %}
                   <li><a href="{% url appraise.views.password_change %}">Change password</a></li>
                   <li><a href="{% url appraise.views.logout %}">Logout "{{user.username}}"</a></li>
+                  <li><a onclick="ChangeStatus();" id="updateEyeTrack">EyeTracking Off</a></li>
                 </ul>
               </li>
 
