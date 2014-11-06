@@ -24,18 +24,22 @@
 <div class="span5" id="divsrc" >
 {% if game_type != "tgt" %}
 <small>Source</small>
-<blockquote style="background-color: #ccffcc;">
-<br>
-<p><div id="divsrc0" style="color:#757473;">{% if source_text.0 %}{{source_text.0}} {% endif %}</div><br/><div id="divsrc1"><strong>{{source_text.1}}</strong></div><br/><div id="divsrc2" style="color:#757473;">{% if source_text.2 %} {{source_text.2}}{% endif %}</div><br/></p>
+<blockquote style="background-color: #ccffcc; font-size: 22.5px;">
+<p><div id="divsrc0" style="color:#757473;"><br/>{% if source_text.0 %}{{source_text.0}} {% endif %}</div>
+   <div id="divsrc1"><br/><strong>{{source_text.1}}</strong></div>
+   <div id="divsrc2" style="color:#757473;"><br/>{% if source_text.2 %} {{source_text.2}}{% endif %}</div><br/>
+ </p>
 {% endif %}
 </blockquote>
 </div>
 <div class="span5 offset1" id="divref" >
 {% if game_type != "src" %}
 <small>Reference</small>
-<blockquote style="background-color: #BCE8F1;">
-<br>
-<p><div id="divref0" style="color:#757473;">{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div><br/><div id="divref1"><strong>{{reference_text.1}}</strong></div><br/><div id="divref2" style="color:#757473;">{% if reference_text.2 %} {{reference_text.2}}{% endif %}</div><br/></p>
+<blockquote style="background-color: #BCE8F1; font-size: 22.5px;">
+ <p><div id="divref0" style="color:#757473;"><br>{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div>
+   <div id="divref1" style="color:#757473;"><br/><strong>{{reference_text.1}}</strong></div>
+   <div id="divref2" style="color:#757473;"><br/>{% if reference_text.2 %} {{reference_text.2}}{% endif %}</div><br/>
+ </p>
 {% endif %}
 </blockquote>
 </div>
@@ -50,7 +54,7 @@
 <div class="row">
 <div class="span11" id="divtrn" >
 <small>Translation</small>
-<blockquote style="background-color: #ffcccc;">
+<blockquote style="background-color:#ffcccc; font-size: 22.5px;">
 <br>
 <p><strong>{{translation.0}}</strong></p><br/>
 </blockquote>
