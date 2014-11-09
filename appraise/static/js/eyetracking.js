@@ -29,6 +29,7 @@ $(function(){
           $(newdiv).attr('id',elem.attr("id")+"_"+word);
           $(newdiv).text(text[word]);
           elem.append(newdiv);
+          elem.append(" ");
       }
      
 
@@ -95,7 +96,8 @@ $(function(){
               self.y + self.height >= gaze.y) {
 
               // hit test succeeded, handle the gaze event!
-              console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height )            
+              console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height )   
+              eyeTribeData.push("{'task':'"+$("#task_progress").text()+"','Region':'"+self.attr("id")+"','time':'"+Date().getTime()+"'}");         
               return true;
           }
 

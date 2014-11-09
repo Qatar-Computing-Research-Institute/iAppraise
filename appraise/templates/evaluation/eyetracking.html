@@ -24,10 +24,10 @@
 <div class="span5" id="divsrc" >
 {% if game_type != "tgt" %}
 <small>Source</small>
-<blockquote style="background-color: #ccffcc; font-size: 22.5px;">
-<p><div id="divsrc0" style="color:#757473;" class="eyeTracking"><br/>{% if source_text.0 %}{{source_text.0}} {% endif %}</div>
-   <div id="divsrc1" class="eyeTracking"><br/><strong>{{source_text.1}}</strong></div>
-   <div id="divsrc2" style="color:#757473;" class="eyeTracking"><br/>{% if source_text.2 %} {{source_text.2}}{% endif %}</div><br/>
+<blockquote style="background-color: #ccffcc; font-size: 22.5px;"><br/>
+<p><div id="divsrc0" style="color:#757473;" class="eyeTracking">{% if source_text.0 %}{{source_text.0}} {% endif %}</div><br/>
+   <strong><div id="divsrc1" class="eyeTracking">{{source_text.1}}</div></strong><br/>
+   <div id="divsrc2" style="color:#757473;" class="eyeTracking">{% if source_text.2 %} {{source_text.2}}{% endif %}</div><br/>
  </p>
 {% endif %}
 </blockquote>
@@ -35,10 +35,10 @@
 <div class="span5 offset1" id="divref" class="eyeTracking" >
 {% if game_type != "src" %}
 <small>Reference</small>
-<blockquote style="background-color: #BCE8F1; font-size: 22.5px;">
- <p><div id="divref0" style="color:#757473;" class="eyeTracking"><br>{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div>
-   <div id="divref1" style="color:#757473;" class="eyeTracking"><br/><strong>{{reference_text.1}}</strong></div>
-   <div id="divref2" style="color:#757473;" class="eyeTracking"><br/>{% if reference_text.2 %} {{reference_text.2}}{% endif %}</div><br/>
+<blockquote style="background-color: #BCE8F1; font-size: 22.5px;"><br/>
+ <p><div id="divref0" style="color:#757473;" class="eyeTracking">{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div><br/>
+   <strong><div id="divref1" class="eyeTracking">{{reference_text.1}}</div></strong><br/>
+   <div id="divref2" style="color:#757473;" class="eyeTracking">{% if reference_text.2 %} {{reference_text.2}}{% endif %}</div><br/>
  </p>
 {% endif %}
 </blockquote>
@@ -56,7 +56,7 @@
 <small>Translation</small>
 <blockquote style="background-color:#ffcccc; font-size: 22.5px;">
 <br>
-<p><strong style="font-size: 22.5px;">{{translation.0}}</strong></p><br/>
+<p><div id="divtrn0" class="eyeTracking">{{translation.0}}</div><br/></p></strong>
 </blockquote>
 </div>
 </div>
