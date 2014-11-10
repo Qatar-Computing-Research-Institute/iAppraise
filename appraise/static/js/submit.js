@@ -1,5 +1,5 @@
     // define the function within the global scope
-    var submitForm = function() {
+   function submitForm() {
 
         //eyeTribeData.push('{"task":"val"}');
         //eyeTribeData.push('{"task":"car"}');
