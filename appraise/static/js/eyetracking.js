@@ -123,16 +123,19 @@ $(function(){
           var obj = jQuery.parseJSON( message );
           var curTime = new Date().getTime();
           if( obj != null) {
-              var d = document.getElementById("canvasWrapper");
-              
+              if(obj.x=='0' && obj.y=='0') { 
+                  $("#feedback").html("<img src='/appraise/files/img/Blind_signal.png' width='40'> Error reading the Eye Tracking signal!!!");
+              } else {
+                $("#feedback").text("");
+              var d = document.getElementById("canvasWrapper");  
               //gaze={x:(obj.x-50-0),y:(obj.y-50-50-Math.log(obj.y))};
               //gaze={x:obj.x ,y:obj.y};
-              gaze={x:(obj.x - window.screenX),y:(obj.y -window.screenY - $("div:first").height())};
+              gaze={x:(obj.x - window.screenX),y:(obj.y -window.screenY - $("div:first").height() + $(window).scrollTop() )};
               myCanvasMove(gaze.x,gaze.y);
               if (eyeTribeActive == 1)
               $(".eyeTrackingWord").css("background","transparent");
               $("#myCanvas").trigger('handleEyeTrack',[gaze]);
- 
+          }
         }
          
       });
