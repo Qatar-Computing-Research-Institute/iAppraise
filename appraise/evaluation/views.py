@@ -290,7 +290,7 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = "{'score':'"+str(submit_sscore) +"','hscore':'"+str(submit_sscore) +"','Eyedata':[" + str(submit_eyedata)+"]}" # submit_button
+            _raw_result = "{'score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"','Eyedata':[" + str(submit_eyedata)+"]}" # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)

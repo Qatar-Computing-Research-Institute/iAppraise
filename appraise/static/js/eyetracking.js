@@ -102,7 +102,7 @@ $(function(){
                 $("#"+self.id).css("background","#ffeeaa");
                }
               console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height+ ","+self.id)   
-              eyeTribeData.push("{'task':'"+$("#task_progress").text()+"','Region':'"+ self.id +"','time':'"+cTime+"'}");         
+              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"'}");         
               return true;
           }
 
@@ -122,7 +122,7 @@ $(function(){
 
           var obj = jQuery.parseJSON( message );
           var curTime = new Date().getTime();
-          if( obj != null) {
+          if( obj != null &&  $('button.btn').text() != ' Next') {
               if(obj.x=='0' && obj.y=='0') { 
                   $("#feedback").html("<img src='/appraise/files/img/Blind_signal.png' width='40'> Error reading the Eye Tracking signal!!!");
               } else {
