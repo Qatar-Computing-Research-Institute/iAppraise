@@ -14,21 +14,22 @@
                 $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");
           break;
         case 1: //$("#feedback").text("** Your Score is good! The actual score is "+Math.round($("#hscore").val()));
-                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'>");
           break;
         case 2: //$("#feedback").text("** Your Score is okay. The actual score is "+Math.round($("#hscore").val()));
-                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
           break;
         case 3: //$("#feedback").text("** Are you allright.. The actual score is "+Math.round($("#hscore").val()));
-                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
           break;
         case 4: //$("#feedback").text("** Did you have your breakfast today??. The actual score is "+Math.round($("#hscore").val()));
-                $("#feedback").html("<img src='/appraise/files/img/star.jpg'>");
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
           break;
         case 5: //$("#feedback").text("** You are loosing it!!!. The actual score is "+Math.round($("#hscore").val()));
-                $("#feedback").html("");
+                $("#feedback").html("<img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
           break;
         default: //$("#feedback").text("** Your are loosing it!!! The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
         }
         //$('.cd-popup').addClass('is-visible');
          $('button.btn').html('<i class="icon-ok"></i> Next');

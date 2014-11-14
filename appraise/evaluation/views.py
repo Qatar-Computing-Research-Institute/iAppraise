@@ -263,7 +263,7 @@ def _handle_eyetracking(request, task, items):
         item_id = request.POST.get('item_id', None)
         now_timestamp = request.POST.get('now', None)
         submit_button = request.POST.get('submit_button', None)
- 
+        submit_task_name = request.POST.get('task_name', None)
         submit_eyedata = request.POST.get('eyedata', None)
         submit_sscore = request.POST.get('sscore', None)
         submit_hscore = request.POST.get('hscore', None)
@@ -290,7 +290,7 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = "{'score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"','Eyedata':[" + str(submit_eyedata)+"]}" # submit_button
+            _raw_result = "{'task':'"+str(submit_task_name)+"','score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"','Eyedata':[" + str(submit_eyedata)+"]}" # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)
@@ -315,6 +315,7 @@ def _handle_eyetracking(request, task, items):
       'description': task.description,
       'game_type': item.attributes['game_type'],
       'item_id': item.id,
+      'task_name':task.task_name,
       'now': mktime(datetime.now().timetuple()),
       'reference_text': reference_text,
       'source_text': source_text,
