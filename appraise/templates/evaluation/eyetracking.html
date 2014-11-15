@@ -67,6 +67,7 @@
  <script>
   $("[data-slider]")
     .bind("slider:ready slider:changed", function (event, data) {
+      if($('button.btn').text() != ' Next')
       $(this)
         .nextAll(".output:first")
           .html(data.value.toFixed(0));
