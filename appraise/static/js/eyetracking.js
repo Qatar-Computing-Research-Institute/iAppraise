@@ -5,7 +5,7 @@ var eyeTribeActive = 0;
 
 $(function(){
   var shadows =[];
-  var iosocket = io.connect('http://192.168.0.107:8080');
+  var iosocket = io.connect('http://localhost:8080');
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext('2d');
 
