@@ -1,11 +1,14 @@
     // define the function within the global scope
    function submitForm() {
 
+
         //eyeTribeData.push('{"task":"val"}');
         //eyeTribeData.push('{"task":"car"}');
         if($('button.btn').text()==' Submit') {
 
         $("#eyedata").val(eyeTribeData);
+        $("#eyedatamap").val("'mapdata':"+$("#eyedatamap").val());
+        $("#screeninfo").val("'ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+screenX+"','ScreenY':'"+screenY+"','ScrollX':'"+scrollX+"','ScrollY':'"+scrollY+"'");
         $("#sscore").val($("#output").text());
         var eval = Math.round(Math.abs($("#sscore").val() - $("#hscore").val())/10);
 

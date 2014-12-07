@@ -2,6 +2,11 @@ var activeRegion = 0;
 var timeRegion = 0;
 var eyeTribeData = [];
 var eyeTribeActive = 0;
+var eyeTrackReplay = 0;
+var counter = 0;
+var mouseX = 0;
+var mouseY = 0;
+
 
 $(function(){
   var shadows =[];
@@ -18,7 +23,8 @@ $(function(){
       width = elem.width()
       height = elem.height()    
       console.log("Creating shadow for object:" + elem);
-      shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
+      //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
+      shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));      
       text=elem.text().split(" ")
       elem.text("")
       for (word in text)
@@ -42,9 +48,10 @@ $(function(){
       y = elem.offset().top
       width = elem.width()
       height = elem.height()    
-      console.log("Creating shadow for object:" + elem);
-      shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
-     
+      console.log("Creating shadow for object:" + elem+" at ");
+      //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
+      shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
+
   });
 
   var myCanvasDraw = function( ){
@@ -73,16 +80,17 @@ $(function(){
   //var msg_manager=document.createElement("div");
   //$(msg_manager).attr("id","msg_manager");
 
-  function eyetrackObject(x, y, width, height,id,text) {
+  function eyetrackObject(x, y, width, height,id) {  //,text
       var self = this;
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
-      this.text = text;
+      //this.text = text;
       this.id=id;
-      console.log("Created object at:" + x+","+ y + ":"+ width + ","+ height+":"+text);
-      
+      //console.log("Created object at:" + x+","+ y + ":"+ width + ","+ height+":"+text);
+      console.log("Created object at:" + x+","+ y + ":"+ width + ","+ height);
+      $("#eyedatamap").val(JSON.stringify(shadows));
       // gaze parameter holds the eye coordinates
       $("#myCanvas").on('handleEyeTrack',function(e,gaze) {
           //console.log("got the event" + gaze.x +", "+ gaze.y);
@@ -95,14 +103,17 @@ $(function(){
               self.x + self.width >= gaze.x &&
               self.y <= gaze.y &&
               self.y + self.height >= gaze.y) {
-
+              document.onmousemove = function(e){
+               mouseX = e.pageX;
+               mouseY = e.pageY;
+              }
               // hit test succeeded, handle the gaze event!
               if (eyeTribeActive == 1)
                if($("#"+self.id).attr("class") == "eyeTrackingWord"){
                 $("#"+self.id).css("background","#ffeeaa");
                }
               console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height+ ","+self.id)   
-              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"'}");         
+              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"','mouseX':'"+mouseX+"','mouseY':'"+mouseY+"','data':"+$("#eyedatafull").val()+"}");         
               return true;
           }
 
@@ -120,7 +131,9 @@ $(function(){
           var curRegion  = "Out";
           var curRegionColor = "#ffe629";
 
-          var obj = jQuery.parseJSON( message );
+          var fullobj = jQuery.parseJSON( message );
+          $("#eyedatafull").val(message);
+          var obj = fullobj.values.frame.avg;
           var curTime = new Date().getTime();
           if( obj != null &&  $('button.btn').text() != ' Next') {
               if(obj.x=='0' && obj.y=='0') { 
@@ -139,6 +152,7 @@ $(function(){
         }
          
       });
+      
 
       iosocket.on('disconnect', function() {
           //$('#incomingChatMessages').append('<li>Disconnected</li>');
@@ -173,6 +187,24 @@ function ChangeStatus() {
       eyeTribeActive = 1;
       //$("#myCanvas").width(100);
       $("#updateEyeTrack").text("EyeTracking Off");
+    }
+
+  }
+
+  function ReplayStatus() {
+
+    //alert("Change status!!!"+eyeTribeActive);
+    if (eyeTrackReplay == 1) {
+
+      eyeTrackReplay = 0;
+      //$("#myCanvas").width(0);
+      $("#replayEyeTrack").text("Replay on");
+
+    } else {
+
+      eyeTrackReplay = 1;
+      //$("#myCanvas").width(100);
+      $("#replayEyeTrack").text("Replay off");
     }
 
   }

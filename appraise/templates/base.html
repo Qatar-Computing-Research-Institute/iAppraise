@@ -11,7 +11,7 @@
     <meta name="author" content="Christian Federmann">
 
     <!-- Le styles -->
-    <link href="{{bootstrap_url}}/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -22,18 +22,18 @@
 
 
     <!-- -->
-    <link href="{{bootstrap_url}}/assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}js/jquery-1.10.2.js"></script>
     <script src="http://localhost:8080/socket.io/socket.io.js"></script>
     <script src="{{ STATIC_URL }}js/eyetracking.js"></script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="{{bootstrap_url}}/assets/js/html5shiv.js"></script>
+      <script src="{{ STATIC_URL }}js/html5shiv.js"></script>
     <![endif]-->
 
   <!-- slider css/js -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="{{ STATIC_URL }}js/jquery.min.js"></script>
   <link rel="stylesheet" href="/appraise/files/css/style.css"> <!-- Resource style -->
   <link rel="stylesheet" href="/appraise/files/css/eyetracking.css"> <!-- Resource style -->
 
@@ -51,11 +51,11 @@
   </style>
 
     <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{bootstrap_url}}/assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{bootstrap_url}}/assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{bootstrap_url}}/assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="{{bootstrap_url}}/assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="{{bootstrap_url}}/assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ STATIC_URL }}ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="{{ STATIC_URL }}ico/favicon.png">
 
 {% block head %}{% endblock %}
   </head>
@@ -98,6 +98,7 @@
                   <li><a href="{% url appraise.views.password_change %}">Change password</a></li>
                   <li><a href="{% url appraise.views.logout %}">Logout "{{user.username}}"</a></li>
                   <li><a onclick="ChangeStatus();" id="updateEyeTrack">EyeTracking On</a></li>
+                  <li><a onclick="ReplayStatus();" id="replayEyeTrack">Replay Off</a></li>
                 </ul>
               </li>
 
@@ -132,19 +133,19 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{bootstrap_url}}/assets/js/jquery.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-transition.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-alert.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-modal.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-dropdown.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-tab.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-tooltip.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-popover.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-button.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-collapse.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-carousel.js"></script>
-    <script src="{{bootstrap_url}}/assets/js/bootstrap-typeahead.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-transition.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-alert.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-dropdown.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-scrollspy.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-tab.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-tooltip.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-popover.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-button.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-collapse.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-carousel.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-typeahead.js"></script>
 
   </body>
 </html>

@@ -264,14 +264,18 @@ def _handle_eyetracking(request, task, items):
         now_timestamp = request.POST.get('now', None)
         submit_button = request.POST.get('submit_button', None)
         submit_task_name = request.POST.get('task_name', None)
+        submit_task_progress = request.POST.get('task_progress', None)
         submit_eyedata = request.POST.get('eyedata', None)
+        submit_eyedatamap = request.POST.get('eyedatamap',None)
+        submit_screeninfo = request.POST.get('screeninfo',None)
         submit_sscore = request.POST.get('sscore', None)
         submit_hscore = request.POST.get('hscore', None)
 
         print("** Submit  : "+str(submit_button))
-        print("** Eyedata : "+str(submit_eyedata))
-        print("** SScore   : "+str(submit_sscore))
-        print("** HScore   : "+str(submit_hscore))      
+        print("** Progress: "+str(submit_task_progress))
+        print("** Eyedata ("+str(len(submit_eyedata))+"): "+str(submit_eyedata.encode("UTF-8")[:200])+" ...")
+        print("** SScore  : "+str(submit_sscore))
+        print("** HScore  : "+str(submit_hscore))      
         # The form is only valid if all variables could be found.
         form_valid = all((item_id, now_timestamp, submit_eyedata, submit_sscore))
     
@@ -290,7 +294,7 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = "{'task':'"+str(submit_task_name)+"','score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"','Eyedata':[" + str(submit_eyedata)+"]}" # submit_button
+            _raw_result = "{'task':'"+str(submit_task_name)+"','score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"',"+str(submit_screeninfo)+","+str(submit_eyedatamap)+",'Eyedata':[" + str(submit_eyedata.encode("UTF-8"))+"]}" # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)
