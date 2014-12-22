@@ -112,7 +112,15 @@ $(function(){
                if($("#"+self.id).attr("class") == "eyeTrackingWord"){
                 $("#"+self.id).css("background","#ffeeaa");
                }
-              console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height+ ","+self.id)   
+              console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height+ ","+self.id);
+	      var additionalInfo =""; 
+              //additionalInfo = ",'divclientWidth':'"+$("#"+self.id).clientWidth+"','divclientHeight':'"+$("#"+self.id).clientHeight+"'";
+              //additionalInfo = additionalInfo + ",'divclientLeft':'"+$("#"+self.id).clientLeft+"','divclientTop':'"+$("#"+self.id).clientTop+"'");
+              //additionalInfo = additionalInfo + ",'divscrollWidth':'"+$("#"+self.id).scrollWidth+"','divscrollHeight':'"+$("#"+self.id).scrollHeight+"'");
+              //additionalInfo = additionalInfo + ",'divscrollLeft':'"+$("#"+self.id).scrollLeft+"','divscrollTop':'"+$("#"+self.id).scrollTop+"'");
+              //additionalInfo = additionalInfo + ",'divoffsetWidth':'"+$("#"+self.id).offsetWidth+"','divoffsetHeight':'"+$("#"+self.id).offsetHeight+"'");
+              //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
+   
               eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"','mouseX':'"+mouseX+"','mouseY':'"+mouseY+"','data':"+$("#eyedatafull").val()+"}");         
               return true;
           }

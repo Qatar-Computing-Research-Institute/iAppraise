@@ -8,7 +8,16 @@
 
         $("#eyedata").val(eyeTribeData);
         $("#eyedatamap").val("'mapdata':"+$("#eyedatamap").val());
-        $("#screeninfo").val("'ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+screenX+"','ScreenY':'"+screenY+"','ScrollX':'"+scrollX+"','ScrollY':'"+scrollY+"'");
+        //$("#screeninfo").val("'ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+screenX+"','ScreenY':'"+screenY+"','ScrollX':'"+scrollX+"','ScrollY':'"+scrollY+"'");
+        $("#screeninfo").val("'ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+window.screenX+"','ScreenY':'"+window.screenY+"','ScrollX':'"+window.scrollX+"','ScrollY':'"+window.scrollY+"','Div_first':'"+$("div:first").height()+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'innerHeight':'"+window.innerHeight+"','outerHeight':'"+window.outerHeight+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'clientWidth':'"+document.body.clientWidth+"','clientHeight':'"+document.body.clientHeight+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'clientLeft':'"+document.body.clientLeft+"','clientTop':'"+document.body.clientTop+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'scrollWidth':'"+document.body.scrollWidth+"','scrollHeight':'"+document.body.scrollHeight+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'scrollLeft':'"+document.body.scrollLeft+"','scrollTop':'"+document.body.scrollTop+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'offsetWidth':'"+document.body.offsetWidth+"','offsetHeight':'"+document.body.offsetHeight+"'");
+        $("#screeninfo").val($("#screeninfo").val()+",'offsetLeft':'"+document.body.offsetLeft+"','offsetTop':'"+document.body.offsetTop+"'");
+
         $("#sscore").val($("#output").text());
         var eval = Math.round(Math.abs($("#sscore").val() - $("#hscore").val())/10);
 

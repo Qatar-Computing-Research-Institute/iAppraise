@@ -8,7 +8,7 @@
 
 var net = require('net')
 	util = require('util'),
-    io = require('socket.io').listen(8080, {log: false}),  // socket server/port
+    io = require('socket.io').listen(8087, {log: false}),  // socket server/port
 	connectionOptions = {
 		ip: 'localhost',  // Eye Tribe Server
 		port: 6555		  // Eye Tribe port
