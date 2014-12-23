@@ -267,7 +267,6 @@ def _handle_eyetracking(request, task, items):
         submit_task_progress = request.POST.get('task_progress', None)
         submit_eyedata = request.POST.get('eyedata', None)
         submit_eyedatamap = request.POST.get('eyedatamap',None)
-        submit_screeninfo = request.POST.get('screeninfo',None)
         submit_sscore = request.POST.get('sscore', None)
         submit_hscore = request.POST.get('hscore', None)
 
@@ -294,7 +293,7 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = "{'task':'"+str(submit_task_name)+"','score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"',"+str(submit_screeninfo)+","+str(submit_eyedatamap)+",'Eyedata':[" + str(submit_eyedata.encode("UTF-8"))+"]}" # submit_button
+            _raw_result = "{'task':'"+str(submit_task_name)+"','score':'"+str(submit_sscore) +"','hscore':'"+str(submit_hscore) +"',"+str(submit_eyedatamap)+",'Eyedata':[" + str(submit_eyedata.encode("UTF-8"))+"]}" # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)
