@@ -121,6 +121,8 @@ $(function(){
               document.onmousemove = function(e){
                mouseX = e.pageX;
                mouseY = e.pageY;
+               mouseYY=e.screenY;
+               mouseXX=e.screenX;
               }
               // hit test succeeded, handle the gaze event!
               if (eyeTribeActive == 1)
@@ -136,7 +138,7 @@ $(function(){
               //additionalInfo = additionalInfo + ",'divoffsetWidth':'"+$("#"+self.id).offsetWidth+"','divoffsetHeight':'"+$("#"+self.id).offsetHeight+"'");
               //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
    
-              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"','mouseX':'"+mouseX+"','mouseY':'"+mouseY+"','ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+window.screenX+"','ScreenY':'"+window.screenY+"','ScrollX':'"+window.scrollX+"','ScrollY':'"+window.scrollY+"','Div_first':'"+$("div:first").height()+"','innerHeight':'"+window.innerHeight+"','outerHeight':'"+window.outerHeight+"','clientWidth':'"+document.body.clientWidth+"','clientHeight':'"+document.body.clientHeight+"','clientLeft':'"+document.body.clientLeft+"','clientTop':'"+document.body.clientTop+"','scrollWidth':'"+document.body.scrollWidth+"','scrollHeight':'"+document.body.scrollHeight+"','scrollLeft':'"+document.body.scrollLeft+"','scrollTop':'"+document.body.scrollTop+"','offsetWidth':'"+document.body.offsetWidth+"','offsetHeight':'"+document.body.offsetHeight+"','offsetLeft':'"+document.body.offsetLeft+"','offsetTop':'"+document.body.offsetTop+"','data':"+$("#eyedatafull").val()+"}");         
+              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"','mouseX':'"+mouseX+"','mouseY':'"+mouseY+"','mouseXX':'"+mouseXX+"','mouseYY':'"+mouseYY+"','ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+window.screenX+"','ScreenY':'"+window.screenY+"','ScrollX':'"+window.scrollX+"','ScrollY':'"+window.scrollY+"','Div_first':'"+$("div:first").height()+"','innerHeight':'"+window.innerHeight+"','outerHeight':'"+window.outerHeight+"','clientWidth':'"+document.body.clientWidth+"','clientHeight':'"+document.body.clientHeight+"','clientLeft':'"+document.body.clientLeft+"','clientTop':'"+document.body.clientTop+"','scrollWidth':'"+document.body.scrollWidth+"','scrollHeight':'"+document.body.scrollHeight+"','scrollLeft':'"+document.body.scrollLeft+"','scrollTop':'"+document.body.scrollTop+"','offsetWidth':'"+document.body.offsetWidth+"','offsetHeight':'"+document.body.offsetHeight+"','offsetLeft':'"+document.body.offsetLeft+"','offsetTop':'"+document.body.offsetTop+"','data':"+$("#eyedatafull").val()+"}");         
               return true;
           }
 
