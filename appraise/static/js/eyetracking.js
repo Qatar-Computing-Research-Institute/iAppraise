@@ -7,7 +7,14 @@ var counter = 0;
 var mouseX = 0;
 var mouseY = 0;
 
-
+var isChrome= navigator.userAgent.indexOf("Chrome") != -1 ;
+var isFirefox= navigator.userAgent.indexOf("Firefox") != -1 ;
+var zoom=function(){return window.devicePixelRatio;}
+var getScaling=function(){ 
+        if(isFirefox){
+          return zoom() ;}
+          else{return 1;}
+        };
 $(function(){
   var shadows =[];
   var iosocket = io.connect('http://localhost:8080');
@@ -84,40 +91,39 @@ $(function(){
   function eyetrackObject(elem) {  //,text
       var self = this;
       this.elem = elem;
-      self.x = self.elem.offset().left;
-      self.y = self.elem.offset().top;
-      self.width = self.elem.width()*window.devicePixelRatio;
-      self.height = self.elem.height()*window.devicePixelRatio;
+      
+      var self.x = function(){return self.elem.offset().left; }
+      var self.y = function(){return self.elem.offset().top;}
+      var self.width=function(){return Math.round(self.elem.width()*zoom());}
+      var self.height = function(){return Math.round(self.elem.height()*zoom());}
+
       self.id = $(self.elem).attr("id");
       //this.text = text;
       //console.log("Created object at:" + x+","+ y + ":"+ width + ","+ height+":"+text);
-      console.log("Created object at:" + self.x+","+ self.y + ":"+ self.width + ","+ self.height);
+      console.log("Created object at:" + self.x()+","+ self.y() + ":"+ self.width() + ","+ self.height());
       //$("#eyedatamap").val(JSON.stringify(shadows));
       // gaze parameter holds the eye coordinates
       $(elem).on('click',function(e) {
-        self.x = self.elem.offset().left;
+        /*self.x = self.elem.offset().left;
       self.y = self.elem.offset().top;
-      self.width = self.elem.width()*window.devicePixelRatio;
-      self.height = self.elem.height()*window.devicePixelRatio;
-      self.id = $(self.elem).attr("id");
+      self.width = self.elem.width()*zoom();
+      self.height = self.elem.height()*zoom();
+      self.id = $(self.elem).attr("id");*/
         console.log("offsets:X "+(e.screenX-e.pageX)+" Y "+(e.screenY-e.pageY));
-        console.log("You hovered over  this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height+ ","+self.id+",mouseX:"+e.pageX+";mouseY:"+e.pageY+ " mouseXX" +e.screenX + " mouseYY" +e.screenY);
+        console.log("You hovered over  this:" + self.x() +","+ self.y() + ":"+self.width()+ "," + self.height()+ ","+self.id+",mouseX:"+e.pageX+";mouseY:"+e.pageY+ " mouseXX" +e.screenX + " mouseYY" +e.screenY);
       });
       $("#myCanvas").on('handleEyeTrack',function(e,gaze) {
           //console.log("got the event" + gaze.x +", "+ gaze.y);
           //console.log(self + self.x +"," + self.y)
-          self.x = self.elem.offset().left;
-          self.y = self.elem.offset().top;
-          self.width = self.elem.width()*window.devicePixelRatio;
-          self.height = self.elem.height()*window.devicePixelRatio;
+          
           self.id = $(self.elem).attr("id");
           // perform hit test between bounding box 
           // and mouse coordinates
           var cTime = new Date().getTime();
-          if ( self.x <= gaze.x &&
-               self.x + self.width >= gaze.x &&
-              self.y <= gaze.y &&
-               self.y + self.height >= gaze.y) {
+          if ( self.x() <= gaze.x &&
+               self.x() + self.width() >= gaze.x &&
+              self.y() <= gaze.y &&
+               self.y() + self.height() >= gaze.y) {
               document.onmousemove = function(e){
                mouseX = e.pageX;
                mouseY = e.pageY;
@@ -129,7 +135,7 @@ $(function(){
                if($(self.elem).attr("class") == "eyeTrackingWord"){
                  $(self.elem).css("background","#ffeeaa");
                }
-              console.log("You looked at this:" + self.x +","+ self.y + ":"+self.width+ "," + self.height+ ","+self.id+",mouseX:"+mouseX+";mouseY:"+mouseY);
+              console.log("You looked at this:" + self.x() +","+ self.y() + ":"+self.width()+ "," + self.height()+ ","+self.id+",mouseX:"+mouseX+";mouseY:"+mouseY);
 	      var additionalInfo =""; 
               //additionalInfo = ",'divclientWidth':'"+$("#"+self.id).clientWidth+"','divclientHeight':'"+$("#"+self.id).clientHeight+"'";
               //additionalInfo = additionalInfo + ",'divclientLeft':'"+$("#"+self.id).clientLeft+"','divclientTop':'"+$("#"+self.id).clientTop+"'");
@@ -138,7 +144,7 @@ $(function(){
               //additionalInfo = additionalInfo + ",'divoffsetWidth':'"+$("#"+self.id).offsetWidth+"','divoffsetHeight':'"+$("#"+self.id).offsetHeight+"'");
               //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
    
-              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"','mouseX':'"+mouseX+"','mouseY':'"+mouseY+"','mouseXX':'"+mouseXX+"','mouseYY':'"+mouseYY+"','ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+window.devicePixelRatio+"','ScreenX':'"+window.screenX+"','ScreenY':'"+window.screenY+"','ScrollX':'"+window.scrollX+"','ScrollY':'"+window.scrollY+"','Div_first':'"+$("div:first").height()+"','innerHeight':'"+window.innerHeight+"','outerHeight':'"+window.outerHeight+"','clientWidth':'"+document.body.clientWidth+"','clientHeight':'"+document.body.clientHeight+"','clientLeft':'"+document.body.clientLeft+"','clientTop':'"+document.body.clientTop+"','scrollWidth':'"+document.body.scrollWidth+"','scrollHeight':'"+document.body.scrollHeight+"','scrollLeft':'"+document.body.scrollLeft+"','scrollTop':'"+document.body.scrollTop+"','offsetWidth':'"+document.body.offsetWidth+"','offsetHeight':'"+document.body.offsetHeight+"','offsetLeft':'"+document.body.offsetLeft+"','offsetTop':'"+document.body.offsetTop+"','data':"+$("#eyedatafull").val()+"}");         
+              eyeTribeData.push("{'Region':'"+ self.id +"','time':'"+cTime+"','mouseX':'"+mouseX+"','mouseY':'"+mouseY+"','mouseXX':'"+mouseXX+"','mouseYY':'"+mouseYY+"','ScreenHeight':'"+Math.round(screen.height*window.devicePixelRatio)+"','ScreenWidth':'"+Math.round(screen.width*window.devicePixelRatio)+"','zoom':'"+zoom()+"','ScreenX':'"+window.screenX;+"','ScreenY':'"+window.screenY;+"','ScrollX':'"+window.scrollX;+"','ScrollY':'"+window.scrollY;+"','Div_first':'"+$("div:first").height()+"','innerHeight':'"+Math.round(window.innerHeight*getScaling())+"','outerHeight':'"+Math.round(window.outerHeight*getScaling())+"','clientWidth':'"+Math.round(document.body.clientWidth*getScaling())+"','clientHeight':'"+Math.round(document.body.clientHeight*getScaling())+",'data':"+$("#eyedatafull").val()+"}");         
               return true;
           }
 
@@ -169,19 +175,20 @@ $(function(){
               //gaze={x:(obj.x-50-0),y:(obj.y-50-50-Math.log(obj.y))};
               //gaze={x:obj.x ,y:obj.y};
               
-              var objX = obj.x/window.devicePixelRatio + window.scrollX - window.screenX - 7.45/window.devicePixelRatio;
-              var objY = obj.y/window.devicePixelRatio + window.scrollY - window.screenY +(window.innerHeight - window.outerHeight) + 5.1/window.devicePixelRatio;
+              
+              var objX = (obj.x - window.screenX*getScaling())/zoom() +window.scrollX  ;//- 7.45/window.devicePixelRatio;
+              var objY = (obj.y - window.screenY*getScaling() - (window.outerHeight -window.innerHeight)*getScaling() )/zoom() +window.scrollY;//+ 5.1/window.devicePixelRatio;
 
-              var objX2 = obj.x/window.devicePixelRatio + window.scrollX - window.screenX - 7.45/window.devicePixelRatio;
-              var objY2 = obj.y/window.devicePixelRatio + window.scrollY - window.screenY +(window.innerHeight - window.outerHeight) + 5.1/window.devicePixelRatio;
+              //var objX2 = obj.x/window.devicePixelRatio + window.scrollX - window.screenX - 7.45/window.devicePixelRatio;
+              //var objY2 = obj.y/window.devicePixelRatio + window.scrollY - window.screenY +(window.innerHeight - window.outerHeight) + 5.1/window.devicePixelRatio;
 
-              gaze2={x:objX2,y:objY2};
+             // gaze2={x:objX2,y:objY2};
 
               gaze={x:objX,y:objY};
-              myCanvasMove((gaze.x-50)/window.devicePixelRatio,(gaze.y-50)/window.devicePixelRatio);
+              myCanvasMove((gaze.x-50*devicePixelRatio),(gaze.y-50*devicePixelRatio));
               if (eyeTribeActive == 1)
               $(".eyeTrackingWord").css("background","transparent");
-              $("#myCanvas").trigger('handleEyeTrack',[gaze2]);
+              $("#myCanvas").trigger('handleEyeTrack',[gaze]);
           }
         }
          
