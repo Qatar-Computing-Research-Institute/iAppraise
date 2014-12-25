@@ -7,7 +7,7 @@
         if($('button.btn').text()==' Submit') {
 
         $("#eyedata").val(eyeTribeData);
-        $("#eyedatamap").val("'mapdata':"+$("#eyedatamap").val());
+        $("#eyedatamap").val($("#eyedatamap").val());
 
         $("#sscore").val($("#output").text());
         var eval = Math.round(Math.abs($("#sscore").val() - $("#hscore").val())/10);
