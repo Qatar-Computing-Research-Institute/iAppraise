@@ -191,7 +191,7 @@ $(function(){
                   //additionalInfo = additionalInfo + ",'divoffsetWidth':'"+$("#"+self.id).offsetWidth+"','divoffsetHeight':'"+$("#"+self.id).offsetHeight+"'");
                   //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
         
-                  eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","mouseX":"'+mouseX+'","mouseY":"'+mouseY+'","mouseXX":"'+mouseXX+'","mouseYY":"'+mouseYY+'","ScreenHeight":"'+Math.round(screen.height*window.devicePixelRatio)+'","ScreenWidth":"'+Math.round(screen.width*window.devicePixelRatio)+'","zoom":"'+zoom()+'","ScreenX":"'+window.screenX+'","ScreenY":"'+window.screenY+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","clientHeight":"'+Math.round(document.body.clientHeight*getScaling())+',"data":'+$('#eyedatafull').val()+'}');         
+                  eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","mouseX":"'+mouseX+'","mouseY":"'+mouseY+'","mouseXX":"'+mouseXX+'","mouseYY":"'+mouseYY+'","ScreenHeight":"'+Math.round(screen.height*window.devicePixelRatio)+'","ScreenWidth":"'+Math.round(screen.width*window.devicePixelRatio)+'","zoom":"'+zoom()+'","ScreenX":"'+window.screenX+'","ScreenY":"'+window.screenY+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","clientHeight":"'+Math.round(document.body.clientHeight*getScaling())+'","data":'+$('#eyedatafull').val()+'}');         
                   return true;
                 }
 
@@ -229,8 +229,8 @@ $(function(){
 
              // gaze2={x:objX2,y:objY2};
 
- 	      obj.x=mouseXX;
-	      obj.y=mouseYY;
+ 	      //obj.x=mouseXX;
+	      //obj.y=mouseYY;
 
               var objX = (obj.x - window.screenX*getScaling())/zoom() +window.scrollX  ;//- 7.45/window.devicePixelRatio;
               var objY = (obj.y - window.screenY*getScaling() - (window.outerHeight -window.innerHeight)*getScaling() )/zoom() +window.scrollY;//+ 5.1/window.devicePixelRatio;
