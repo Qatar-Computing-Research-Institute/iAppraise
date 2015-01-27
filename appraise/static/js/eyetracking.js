@@ -27,7 +27,7 @@ $(function(){
   var rc   =  document.getElementById("myRCanvas");
   var rctx = rc.getContext('2d');
 
-                  document.onmousemove = function(e){
+  document.onmousemove = function(e){
                     mouseX  = e.pageX;
                     mouseY  = e.pageY;
                     mouseYY = e.screenY;
@@ -232,16 +232,16 @@ $(function(){
  	      //obj.x=mouseXX;
 	      //obj.y=mouseYY;
 
-              var objX = (obj.x - window.screenX*getScaling())/zoom() +window.scrollX  ;//- 7.45/window.devicePixelRatio;
-              var objY = (obj.y - window.screenY*getScaling() - (window.outerHeight -window.innerHeight)*getScaling() )/zoom() +window.scrollY;//+ 5.1/window.devicePixelRatio;
+              var objX = (obj.x - window.screenX*getScaling())/zoom() +window.scrollX  - 7.45/window.devicePixelRatio;
+              var objY = (obj.y - window.screenY*getScaling() - (window.outerHeight -window.innerHeight)*getScaling() )/zoom() +window.scrollY + 5.1/window.devicePixelRatio;
 
               gaze={x:objX,y:objY};
               //gaze ={x:mouseXX,y:mouseYY};
 
-              myCanvasMove(gaze.x,gaze.y); 
+              //myCanvasMove(gaze.x,gaze.y); 
               if (eyeTribeActive == 1) {
                 $(".eyeTrackingWord").css("background","transparent");
-		 $(".eyeTrackingWord").css("border","0px");
+		            $(".eyeTrackingWord").css("border","0px");
               }
               $("#myCanvas").trigger('handleEyeTrack',[gaze]);
               

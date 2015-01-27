@@ -226,8 +226,8 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
-  color: #333333;
-  background-color: #ffffff;
+  color: #E7E6E6; //#333333;
+  background-color: #333333; //#ffffff;
 }
 
 a {
