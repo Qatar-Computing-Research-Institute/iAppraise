@@ -89,7 +89,6 @@ $(function(){
       if(eyeTribeActive == 1) {
           var canvas = $("#canvasWrapper");
           var canvas = document.getElementById("canvasWrapper");
-          //console.log("Move canvas to :" + x +","+ y )       
           canvas.style.left= (x-50) +'px';
           canvas.style.top = (y-50) +'px';
           myCanvasDraw();
@@ -140,26 +139,9 @@ $(function(){
       
  self.width=function(){return Math.round((self.elem.width()+ (parseInt(self.elem.css('padding-left'),10)+parseInt(self.elem.css('padding-right'),10))));}
  self.height = function(){return Math.round((self.elem.height()+ (parseInt(self.elem.css('padding-top'),10)+parseInt(self.elem.css('padding-bottom'),10))));} 
- //self.width=function(){return Math.round((self.elem.width()*zoom()));}
- //self.height = function(){return Math.round((self.elem.height()*zoom()));} 
 
-       //this.text = text;
-      //console.log("Created object at:" + x+","+ y + ":"+ width + ","+ height+":"+text);
-      //console.log("Created object '"+self.id+"' at:" + self.x()+","+ self.y() + ":"+ self.width() + ","+ self.height());
-      //$("#eyedatamap").val(JSON.stringify(shadows));
-      // gaze parameter holds the eye coordinates
-      //$(self.elem).onxclick=function(e) {
-        /*self.x = self.elem.offset().left;
-      self.y = self.elem.offset().top;
-      self.width = self.elem.width()*zoom();
-      self.height = self.elem.height()*zoom();
-      self.id = $(self.elem).attr("id");*/
-        //console.log("offsets:X "+(e.screenX-e.pageX)+" Y "+(e.screenY-e.pageY));
-        //console.log("You hovered over  this:" + self.x() +","+ self.y() + ":"+self.width()+ "," + self.height()+ ","+self.id+",mouseX:"+e.pageX+";mouseY:"+e.pageY+ " mouseXX" +e.screenX + " mouseYY" +e.screenY);
-      //}
+
       $("#myCanvas").on('handleEyeTrack',function(e,gaze) {
-          //console.log("got the event" + gaze.x +", "+ gaze.y);
-          //console.log(self + self.x +"," + self.y)
           
           self.id = $(self.elem).attr("id");
           // perform hit test between bounding box 
@@ -174,7 +156,7 @@ $(function(){
  
                   if (eyeTribeActive == 1)
                     if($(self.elem).attr("class") == "eyeTrackingWord"){
-                      $(self.elem).css("background","#ffeeaa");
+                      $(self.elem).css("background","#F09E7E");
                       $(self.elem).css("border","1px solid #666");
                       //myRMove(self.x(),self.y(),self.height(), self.width());
                     }
@@ -191,7 +173,8 @@ $(function(){
                   //additionalInfo = additionalInfo + ",'divoffsetWidth':'"+$("#"+self.id).offsetWidth+"','divoffsetHeight':'"+$("#"+self.id).offsetHeight+"'");
                   //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
         
-                  eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","mouseX":"'+mouseX+'","mouseY":"'+mouseY+'","mouseXX":"'+mouseXX+'","mouseYY":"'+mouseYY+'","ScreenHeight":"'+Math.round(screen.height*window.devicePixelRatio)+'","ScreenWidth":"'+Math.round(screen.width*window.devicePixelRatio)+'","zoom":"'+zoom()+'","ScreenX":"'+window.screenX+'","ScreenY":"'+window.screenY+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","clientHeight":"'+Math.round(document.body.clientHeight*getScaling())+'","data":'+$('#eyedatafull').val()+'}');         
+                  //eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","mouseX":"'+mouseX+'","mouseY":"'+mouseY+'","mouseXX":"'+mouseXX+'","mouseYY":"'+mouseYY+'","ScreenHeight":"'+Math.round(screen.height*window.devicePixelRatio)+'","ScreenWidth":"'+Math.round(screen.width*window.devicePixelRatio)+'","zoom":"'+zoom()+'","ScreenX":"'+window.screenX+'","ScreenY":"'+window.screenY+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","clientHeight":"'+Math.round(document.body.clientHeight*getScaling())+'","data":'+$('#eyedatafull').val()+'}');         
+                  eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","zoom":"'+zoom()+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","data":'+$('#eyedatafull').val()+'}');   
                   return true;
                 }
 
@@ -205,7 +188,6 @@ $(function(){
       $('#incomingChatMessages').append($('<li>Connected</li>'));
 
       iosocket.on('message', function(message) {
-          //$('#incomingChatMessages').append($('<li></li>').text(message));
           var curRegion  = "Out";
           var curRegionColor = "#ffe629";
 
@@ -219,18 +201,6 @@ $(function(){
               } else {
                 $("#feedback").text("");
               var d = document.getElementById("canvasWrapper");  
-              //gaze={x:(obj.x-50-0),y:(obj.y-50-50-Math.log(obj.y))};
-              //gaze={x:obj.x ,y:obj.y};
-              
-              
-
-              //var objX = obj.x/window.devicePixelRatio + window.scrollX - window.screenX - 7.45/window.devicePixelRatio;
-              //var objY = obj.y/window.devicePixelRatio + window.scrollY - window.screenY +(window.innerHeight - window.outerHeight) + 5.1/window.devicePixelRatio;
-
-             // gaze2={x:objX2,y:objY2};
-
- 	      //obj.x=mouseXX;
-	      //obj.y=mouseYY;
 
               var objX = (obj.x - window.screenX*getScaling())/zoom() +window.scrollX  - 7.45/window.devicePixelRatio;
               var objY = (obj.y - window.screenY*getScaling() - (window.outerHeight -window.innerHeight)*getScaling() )/zoom() +window.scrollY + 5.1/window.devicePixelRatio;
