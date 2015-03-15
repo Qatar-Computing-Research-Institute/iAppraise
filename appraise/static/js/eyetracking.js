@@ -37,13 +37,14 @@ $(function(){
   $(".eyeTracking").each(function() {
 
       elem = $(this);
-      //x = elem.offset().left
-      //y = elem.offset().top
-      //width = elem.width()
-      //height = elem.height()    
-      console.log("Creating shadow for object:" + elem);
+      x = elem.offset().left
+      y = elem.offset().top
+      width = elem.width()
+      height = elem.height()    
+      console.log("Creating shadow for object:" + elem.attr("id"));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
-      shadows.push(new eyetrackObject(elem));      
+      //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
+      shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:div}');
       text=elem.text().split(" ")
       elem.text("")
       for (word in text)
@@ -63,15 +64,17 @@ $(function(){
   $(".eyeTrackingWord").each(function() {
 
       elem = $(this);
-      //x = elem.offset().left
-      //y = elem.offset().top
-      //width = elem.width()
-      //height = elem.height()    
+      x = elem.offset().left
+      y = elem.offset().top
+      width = elem.width()
+      height = elem.height()    
       //console.log("Creating shadow for object:" + JSON.stringify(elem)+" at ");
+      console.log("Created object at:" + x+","+ y + ":"+ elem.width() + ","+ elem.height()+"::"+elem.attr("id"));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
-      shadows.push(new eyetrackObject(elem));
-
+      shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:elem}');
+      new eyetrackObject(elem);
+      $("#eyedatamap").val(JSON.stringify(shadows)); 
   });
 
   var myCanvasDraw = function( ){
@@ -130,6 +133,7 @@ $(function(){
       
       //self.x = function(){return self.elem.offset().left - parseInt(self.elem.css('padding-left'),10)*zoom(); }
       //self.y = function(){return self.elem.offset().top - parseInt(self.elem.css('padding-top'),10)*zoom();}
+      $("#eyedatamap").val(JSON.stringify(shadows));
 
       self.x = function(){return self.elem.offset().left;  - parseInt(self.elem.css('padding-left'),10)}
       self.y = function(){return self.elem.offset().top  - parseInt(self.elem.css('padding-top'),10);}
@@ -174,7 +178,7 @@ $(function(){
                   //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
         
                   //eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","mouseX":"'+mouseX+'","mouseY":"'+mouseY+'","mouseXX":"'+mouseXX+'","mouseYY":"'+mouseYY+'","ScreenHeight":"'+Math.round(screen.height*window.devicePixelRatio)+'","ScreenWidth":"'+Math.round(screen.width*window.devicePixelRatio)+'","zoom":"'+zoom()+'","ScreenX":"'+window.screenX+'","ScreenY":"'+window.screenY+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","clientHeight":"'+Math.round(document.body.clientHeight*getScaling())+'","data":'+$('#eyedatafull').val()+'}');         
-                  eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","zoom":"'+zoom()+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","data":'+$('#eyedatafull').val()+'}');   
+                  eyeTribeData.push('{"Region":"'+ self.id + '","gazeX":"'+gaze.x+ '","gazeY":"'+gaze.y+'","time":"'+cTime+'","zoom":"'+zoom()+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","data":'+$('#eyedatafull').val()+'}');   
                   return true;
                 }
 

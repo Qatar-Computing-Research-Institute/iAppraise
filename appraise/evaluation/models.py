@@ -33,6 +33,7 @@ APPRAISE_TASK_TYPE_CHOICES = (
   ('4', 'Error classification'),
   ('5', '3-Way Ranking'),
   ('6', 'Eyetracking game'),
+  ('7', 'Eyetracking basic game'),
 )
 
 
@@ -253,7 +254,10 @@ class EvaluationTask(models.Model):
 
         elif _task_type == 'Eyetracking game':
             pass
-        
+
+        elif _task_type == 'Eyetracking basic game':
+            pass
+ 
         return _header
     
     def get_status_for_user(self, user=None):
@@ -306,7 +310,10 @@ class EvaluationTask(models.Model):
 
         elif _task_type == 'Eyetracking game':
             pass
-        
+
+        elif _task_type == 'Eyetracking basic game':
+            pass
+
         return _status
     
     def get_status_for_users(self):
@@ -623,7 +630,10 @@ class EvaluationResult(models.Model):
 
                 elif _task_type == 'Eyetracking game':
                     self.results = self.raw_result
-            
+
+                elif _task_type == 'Eyetracking basic game':
+                    self.results = self.raw_result
+
             # pylint: disable-msg=W0703
             except Exception, msg:
                 self.results = msg
@@ -650,7 +660,9 @@ class EvaluationResult(models.Model):
 
         elif _task_type == 'Eyetracking game':
             return self.export_to_quality_checking_xml()
-    
+        elif _task_type == 'Eyetracking basic game':
+            return self.export_to_quality_checking_xml()
+ 
     def export_to_quality_checking_xml(self):
         """
         Renders this EvaluationResult as Quality Checking XML String.
