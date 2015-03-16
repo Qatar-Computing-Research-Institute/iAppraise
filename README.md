@@ -41,6 +41,8 @@
 
 <p>Appraise is based on the <a href="http://www.djangoproject.com/">Django framework</a>, version 1.3 or newer. You will need <strong>Python 2.7</strong> to run it locally. For deployment, a FastCGI compatible web server such as <strong>lighttpd</strong> is required.</p>
 
+<pre><code>pip install Django==1.4.15</code></pre>
+
 <h2 id="quickstart_instructions">Quickstart Instructions</h2>
 
 <p>Assuming you have already installed Python and Django, you can clone a local copy of Appraise using the following command; you can change the folder name <code>Appraise-Software</code> to anything you like.</p>
