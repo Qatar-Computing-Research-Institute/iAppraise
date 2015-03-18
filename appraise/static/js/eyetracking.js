@@ -90,6 +90,19 @@ $(function(){
   
   var myCanvasMove = function(x,y ){
       if(eyeTribeActive == 1) {
+          //var canvas = $("#canvasWrapper");
+          x = x * window.screen.availWidth/1680 - window.screenX;
+          y = y * window.screen.availHeight/1050 -window.screenY - $("div:first").height() + $(window).scrollTop();
+          var canvas = document.getElementById("canvasWrapper");
+          console.log("Move canvas to :" + x +","+ y )       
+          canvas.style.left= x +'px';
+          canvas.style.top = y +'px';
+          myCanvasDraw();
+
+        }
+  };
+  var myCanvasMove_Orig = function(x,y ){
+      if(eyeTribeActive == 1) {
           var canvas = $("#canvasWrapper");
           var canvas = document.getElementById("canvasWrapper");
           canvas.style.left= (x-50) +'px';
@@ -194,12 +207,13 @@ $(function(){
       iosocket.on('message', function(message) {
           var curRegion  = "Out";
           var curRegionColor = "#ffe629";
-
+          if(($('#submit_button').text()!=' Submit') ||  ($('#submit_stop_button').text()!=' Stop Recording'))
+              return;
           var fullobj = jQuery.parseJSON( message );
           $("#eyedatafull").val(message);
           var obj = fullobj.values.frame.avg;
           var curTime = new Date().getTime();
-          if( obj != null &&  $('button.btn').text() != ' Next') {
+          if( obj != null &&  $('#submit_button').text() != ' Next') {
               if(obj.x=='0' && obj.y=='0') { 
                   $("#feedback").html("<img src='/appraise/files/img/Blind_signal.png' width='40'> Error reading the Eye Tracking signal!!!");
               } else {
@@ -217,7 +231,8 @@ $(function(){
                 $(".eyeTrackingWord").css("background","transparent");
 		            $(".eyeTrackingWord").css("border","0px");
               }
-              $("#myCanvas").trigger('handleEyeTrack',[gaze]);
+              
+                $("#myCanvas").trigger('handleEyeTrack',[gaze]);
               
           }
         }
@@ -263,7 +278,111 @@ function ChangeStatus() {
     }
 
   }
+function delayedAlert() {
+  timeoutID = window.setTimeout(slowAlert, 4000);
+}
 
+function slowAlert(d,i) {
+  $(".eyeTrackingWord").css("background","transparent");
+  $(".eyeTracking").css("background","transparent");            
+  $("#"+d).css("background","#ffeeaa");
+  //$("#feedback").text($("#feedback").text()+":"+i);
+}
+
+
+  function viewForm() {
+    var obj_trackdata;
+    var milliseconds = 1000;
+    var tcounter = 0;
+    var startTime = 0;
+    //alert ($("#trackdata").val());
+    eyeTribeActive = 1;
+    speedReplay = $('#speedlist option:selected').val();
+    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed "+tcounter);
+    obj_trackdata = jQuery.parseJSON("{\"data\":["+$("#eyedata").val()+"]}");
+    $.each($.parseJSON("{\"data\":["+$("#eyedata").val()+"]}"), function (item, value) {
+        $.each(value, function (i, object) {
+           var tactiveRegion;
+           var ttimeRegion;
+           var c;
+
+           if(tcounter ==0)
+                startTime   = object.time;
+
+           tcounter= tcounter+1;
+
+           ttimeRegion   = (object.time-startTime)/100;
+
+           //$("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+           c = tcounter*100;
+           if(object.data.values.frame.fix != "false")
+           switch($('#datalist option:selected').val()) {
+            case 'left': 
+                  var obj = object.data.values.frame.lefteye.avg;
+                  window.setTimeout(function () {
+                                                    var b = myCanvasMove(obj.x,obj.y);
+                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+                                                    console.log("Processing "+obj.x+":"+obj.y+" From data");  
+                                                }, 
+                                                tcounter*ttimeRegion/speedReplay);
+                  
+                break;
+            case 'right': 
+                  var obj = object.data.values.frame.righteye.avg;
+                  window.setTimeout(function () {
+                                                    var b = myCanvasMove(obj.x,obj.y);
+                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+                                                    console.log("Processing "+obj.x+":"+obj.y+" From data");  
+                                                }, 
+                                                tcounter*ttimeRegion/speedReplay);
+                  
+                break;
+            case 'avg': 
+                  tactiveRegion = object.Region;
+                  var obj = object.data.values.frame.avg;
+                  var objR = object.data.values.frame.righteye.avg;
+                  var objL = object.data.values.frame.lefteye.avg;
+                  window.setTimeout(function () {
+                                                    var b = myCanvasMove(obj.x,obj.y);
+                                                    var r = myCanvasMoveR(objR.x,objR.y);
+                                                    var l = myCanvasMoveL(objL.x,objL.y);
+                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+                                                    console.log("Processing "+obj.x+":"+obj.y+" From data");
+                                                    if(tactiveRegion.indexOf("_")>1)
+                                                    slowAlert(tactiveRegion, c*ttimeRegion/speedReplay);  
+                                                }, 
+                                                tcounter*ttimeRegion/speedReplay);
+                break;
+                
+            case 'words': 
+                  tactiveRegion = object.Region;
+                  $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed "+tcounter+" time:"+c*ttimeRegion/speedReplay);
+                  if(tactiveRegion.indexOf("_")>1)
+                    window.setTimeout(
+                        function () {
+                        slowAlert(tactiveRegion, c*ttimeRegion/speedReplay); 
+                        $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records"); 
+                        }, 
+                        tcounter*ttimeRegion/speedReplay
+                      );
+                break;
+
+            default: 
+                  tactiveRegion = object.Region;
+                  window.setTimeout(
+                    function () {
+                      slowAlert(tactiveRegion, c*ttimeRegion/speedReplay);
+                    }, 
+                    tcounter*ttimeRegion/speedReplay
+                   );
+          }
+            //$("#"+activeRegion).css("background","#ffeeaa");
+            prevTime = ttimeRegion;
+        });
+
+    });
+  }
+    
   function ReplayStatus() {
 
     //alert("Change status!!!"+eyeTribeActive);
@@ -283,3 +402,73 @@ function ChangeStatus() {
     }
 
   }
+
+    // define the function within the global scope
+   function submitForm() {
+
+        //eyeTribeData.push('{"task":"val"}');
+        //eyeTribeData.push('{"task":"car"}');
+        if($('#submit_button').text()==' Submit') {
+
+        $("#eyedata").val(eyeTribeData);
+        $("#eyedatamap").val($("#eyedatamap").val());
+
+        $("#sscore").val($("#output").text());
+        var eval = Math.round(Math.abs($("#sscore").val() - $("#hscore").val())/10);
+
+        switch (eval) {
+        case 0: //$("#feedback").text("** Your Score is great! The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");
+          break;
+        case 1: //$("#feedback").text("** Your Score is good! The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'>");
+          break;
+        case 2: //$("#feedback").text("** Your Score is okay. The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
+          break;
+        case 3: //$("#feedback").text("** Are you allright.. The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
+          break;
+        case 4: //$("#feedback").text("** Did you have your breakfast today??. The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
+          break;
+        case 5: //$("#feedback").text("** You are loosing it!!!. The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
+          break;
+        default: //$("#feedback").text("** Your are loosing it!!! The actual score is "+Math.round($("#hscore").val()));
+                $("#feedback").html("<img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
+        }
+        //$('.cd-popup').addClass('is-visible');
+         $('#submit_button').html('<i class="icon-ok"></i> Next');
+      }
+      else {
+        $("#myform").submit();
+        $('#submit_button').html('<i class="icon-ok"></i> Submit');
+      };
+    }
+
+  // define the function within the global scope
+   function SubmitStopForm() {
+        //eyeTribeData.push('{"task":"val"}');
+        //eyeTribeData.push('{"task":"car"}');
+      if($('#submit_stop_button').text()==' Stop Recording') {
+         eyeTrackReplay = 1;
+        //$('.cd-popup').addClass('is-visible');
+         $("#eyedata").val(eyeTribeData);
+         $("#eyedatamap").val($("#eyedatamap").val());
+         $('#submit_stop_button').html('<i class="icon-ok"></i> Resume');
+         document.getElementById('replayBlc').style.display = 'block';
+      } else
+      if($('#submit_stop_button').text()==' Resume'){
+        $('#submit_stop_button').html('<i class="icon-ok"></i> Stop Recording');
+        $('#submit_button').html('<i class="icon-ok"></i> Submit');
+         $("#feedback").text("");
+        document.getElementById('replayBlc').style.display = 'none';
+        $("#myform").onsubmit = function() {
+          return false;
+        }
+      }
+    }
+
+
+

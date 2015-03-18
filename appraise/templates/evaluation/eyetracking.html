@@ -84,8 +84,29 @@
 <input id="eyedatamap" name="eyedatamap" type="hidden" value=""/>
 <input id="eyedatafull" name="eyedatafull" type="hidden" value=""/>
 <input id="hscore" name="hscore" type="hidden" value="{{hscore}}" />
-<br> <button class="btn" name="submit_button" accesskey="1" type="button" onClick="submitForm();"><i class="icon-ok"></i> Submit</button> 
+<br> <button class="btn" id="submit_button" name="submit_button" accesskey="1" type="button" onClick="submitForm();"><i class="icon-ok"></i> Submit</button> 
   &nbsp;
+    <button class="btn" name="submit_stop_button" id ="submit_stop_button" accesskey="2" type="button" onClick="SubmitStopForm();"><i class="icon-ok"></i> Stop Recording</button>
+  <br/>
+  <span name="replayBlc" id="replayBlc" style="display: none; padding-top: 4px;" valing="center">
+  <button class="btn" name="view_button" id="view_button"  accesskey="1" type="button" onclick="viewForm();"><i class="icon-ok"></i>View</button> &nbsp; 
+    Speed: <select id="speedlist" style="margin-bottom:4px; margin-top:4px;">
+      <option value="1">x1</option>
+      <option value="2">x2</option>
+      <option value="3">x3</option>
+      <option value="4">x4</option>
+      <option value="5">x5</option>    
+      <option value="10" selected>x10</option>
+    </select>
+    Data: <select id="datalist" style="margin-bottom:4px; margin-top:4px;">
+      <option value="div">div</option>
+      <option value="words" selected>word</option>
+      <option value="left">left</option>
+      <option value="right">right</option>
+      <option value="avg">avg</option>
+    </select>
+  </span>
+
 </div>
 
 </form>
