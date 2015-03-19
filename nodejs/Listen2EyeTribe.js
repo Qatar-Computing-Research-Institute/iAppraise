@@ -8,7 +8,7 @@
 
 var net = require('net')
 	util = require('util'),
-    io = require('socket.io').listen(8087, {log: false}),  // socket server/port
+    io = require('socket.io').listen(8080, {log: false}),  // socket server/port
 	connectionOptions = {
 		ip: 'localhost',  // Eye Tribe Server
 		port: 6555		  // Eye Tribe port
@@ -17,7 +17,7 @@ var net = require('net')
 var socket = net.createConnection(connectionOptions, function() {
 	setInterval(function() {
 		socket.write(JSON.stringify({"category": "heartbeat"}));
-	}, 200);
+	}, 20);
 
 	console.log('Socket on port '+connectionOptions.port+' (TheEyeTribe server) connected');
 	socket.on('error', function(data) {
@@ -29,16 +29,27 @@ var socket = net.createConnection(connectionOptions, function() {
 	})
 
 	socket.on('data', function(data) {
+		var data_elts = data.replace(/(\r\n|\n|\r)/gm," ").split('{"category":"').join('###{"category":"').split('###');
+		for(var i=0;i<data_elts.length;i++) 
 		try {
 			// Parse json data
-			data = JSON.parse(data);
-			if(data.values && data.values.frame) {
-				console.log(JSON.stringify(data.values.frame.avg));
+			//console.log("Data::: '"+data_elts[i]+"'")
+
+			data_elts[i]=data_elts[i].replace(/^\s+/g,'').replace(' ','');//.replace(/\'/g,"\"");
+			data_elts[i]=data_elts[i].replace(/\s+$/g,'');//.replace(/\'/g,"\"");
+			//console.log("'"+data_elts[i]+"'")
+			if(data_elts[i].length) {
+			jdata = JSON.parse(data_elts[i]);
+			if(jdata.values && jdata.values.frame) {
+				//console.log(JSON.stringify(jdata));
+				//console.log(JSON.stringify(data.values.frame.avg));
 				// send the selected json data
-				io.sockets.emit('message',JSON.stringify(data));
+				io.sockets.emit('message',JSON.stringify(jdata));
+			}
 			}
 		} catch(e) {
-		console.error('Malformed JSON', e);
+			//console.error('Malformed JSON', e,"Data='",jdata,"'==EOD");
+			console.error('Malformed JSON', e," Data:",data_elts[i]);
 		}
 	})
 
