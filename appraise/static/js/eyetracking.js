@@ -300,7 +300,7 @@ function slowAlert(d,i) {
     speedReplay = $('#speedlist option:selected').val();
     $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed "+tcounter);
     obj_trackdata = jQuery.parseJSON("{\"data\":["+$("#eyedata").val()+"]}");
-    $.each($.parseJSON("{\"data\":["+$("#eyedata").val()+"]}"), function (item, value) {
+    $.each($.parseJSON("{\"data\":["+$("#eyedata").val()+"]}"), function (item+1, value) {
         $.each(value, function (i, object) {
            var tactiveRegion;
            var ttimeRegion;
