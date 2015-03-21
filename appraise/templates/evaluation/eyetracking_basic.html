@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="xalert xalert-info">
+  <strong id="task_progress">{{task_progress}}</strong>
+</div>
+
+<div id="canvasWrapper" style="position:fixed; top:40px; right: 900px;">
+    <canvas id="myCanvas" width="100" height="100" style="opacity: 0.4;" style="border:1px solid #ffe629;"><p>Your browser doesn't support canvas.</p></canvas>
+</div>
+
+<div id="RWrapper" style="position:fixed; top:200px; right: 600px;">
+    <canvas id="myRCanvas" width="40" height="20" style="opacity: 0.4;" style="border:1px solid #d3d3d3;"><p>Your browser doesn't support canvas.</p></canvas>
+</div>
+
+<div class="container">
+{% if description %}
+<div class="row">
+<div class="span11">
+<p>{{description}}</p>
+</div>
+</div>
+{% endif %}
+
+<div class="row">
+<div class="span5" id="divsrc" >
+{% if game_type != "tgt" %}
+<small>Source</small>
+<blockquote style="background-color: #33333A; font-size: 28.5px;"><br/>
+<p><strong><div id="divsrc1" class="eyeTracking" style="direction:rtl;">{{source_text.1}}</div></strong><br/>
+ </p>
+{% endif %}
+</blockquote>
+</div>
+<div class="span5 offset1" id="divref" class="eyeTracking" >
+{% if game_type != "src" %}
+<small>Translation</small>
+<blockquote style="background-color: #33333A; font-size: 22.5px;"><br/>
+ <p><strong><div id="divref1" class="eyeTracking">{{translation.0}}</div></strong><br/>
+ </p>
+{% endif %}
+</blockquote>
+</div>
+</div>
+
+<form action="{{action_url}}" method="post" id="myform">
+
+<input name="item_id" type="hidden" value="{{item_id}}" />
+<input name="now" type="hidden" value="{{now}}" />
+
+<div class="actions">
+<!--  slider css/js-->
+ <input type="text" data-slider="true" value="50" data-slider-range="0,100" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"><span class="output" id="output"></span>
+ <script>
+  $("[data-slider]")
+    .bind("slider:ready slider:changed", function (event, data) {
+      if($('button.btn').text() != ' Next')
+      $(this)
+        .nextAll(".output:first")
+          .html(data.value.toFixed(0));
+    });
+  </script> <span style="color: #f00; font-size: 16px;" class="feedback" id="feedback"></span>
+<input id="eyedata" name="eyedata" type="hidden" value="" />
+<input id="sscore" name="sscore" type="hidden" value="" />
+<input id="task_name" name="task_name" type="hidden" value="{{task_name}}" />
+<input id="task_progress" name="task_progress" type="hidden" value="{{task_progress}}" />
+<input id="eyedatamap" name="eyedatamap" type="hidden" value=""/>
+<input id="eyedatafull" name="eyedatafull" type="hidden" value=""/>
+<input id="hscore" name="hscore" type="hidden" value="{{hscore}}" />
+<br> <button class="btn" id="submit_button" name="submit_button" accesskey="1" type="button" onClick="submitForm();"><i class="icon-ok"></i> Submit</button> 
+  &nbsp;
+    <button class="btn" name="submit_stop_button" id ="submit_stop_button" accesskey="2" type="button" onClick="SubmitStopForm();"><i class="icon-ok"></i> Stop Recording</button>
+  <br/>
+  <span name="replayBlc" id="replayBlc" style="display: none; padding-top: 4px;" valing="center">
+  <button class="btn" name="view_button" id="view_button"  accesskey="1" type="button" onclick="viewForm();"><i class="icon-ok"></i>View</button> &nbsp; 
+    Speed: <select id="speedlist" style="margin-bottom:4px; margin-top:4px;">
+      <option value="1">x1</option>
+      <option value="2">x2</option>
+      <option value="3">x3</option>
+      <option value="4">x4</option>
+      <option value="5">x5</option>    
+      <option value="10" selected>x10</option>
+    </select>
+    Data: <select id="datalist" style="margin-bottom:4px; margin-top:4px;">
+      <option value="div">div</option>
+      <option value="words" selected>word</option>
+      <option value="left">left</option>
+      <option value="right">right</option>
+      <option value="avg">avg</option>
+    </select>
+  </span>
+
+</div>
+
+</form>
+
+</div>
+
+{% endblock %}
