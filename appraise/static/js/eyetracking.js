@@ -300,7 +300,7 @@ function slowAlert(d,i) {
     speedReplay = $('#speedlist option:selected').val();
     $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed "+tcounter);
     obj_trackdata = jQuery.parseJSON("{\"data\":["+$("#eyedata").val()+"]}");
-    $.each($.parseJSON("{\"data\":["+$("#eyedata").val()+"]}"), function (item+1, value) {
+    $.each($.parseJSON("{\"data\":["+$("#eyedata").val()+"]}"), function (item, value) {
         $.each(value, function (i, object) {
            var tactiveRegion;
            var ttimeRegion;
@@ -321,7 +321,7 @@ function slowAlert(d,i) {
                   var obj = object.data.values.frame.lefteye.avg;
                   window.setTimeout(function () {
                                                     var b = myCanvasMove(obj.x,obj.y);
-                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records");
                                                     console.log("Processing "+obj.x+":"+obj.y+" From data");  
                                                 }, 
                                                 tcounter*ttimeRegion/speedReplay);
@@ -331,7 +331,7 @@ function slowAlert(d,i) {
                   var obj = object.data.values.frame.righteye.avg;
                   window.setTimeout(function () {
                                                     var b = myCanvasMove(obj.x,obj.y);
-                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records");
                                                     console.log("Processing "+obj.x+":"+obj.y+" From data");  
                                                 }, 
                                                 tcounter*ttimeRegion/speedReplay);
@@ -346,7 +346,7 @@ function slowAlert(d,i) {
                                                     var b = myCanvasMove(obj.x,obj.y);
                                                     var r = myCanvasMoveR(objR.x,objR.y);
                                                     var l = myCanvasMoveL(objL.x,objL.y);
-                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records");
+                                                    $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records");
                                                     console.log("Processing "+obj.x+":"+obj.y+" From data");
                                                     if(tactiveRegion.indexOf("_")>1)
                                                     slowAlert(tactiveRegion, c*ttimeRegion/speedReplay);  
@@ -361,7 +361,7 @@ function slowAlert(d,i) {
                     window.setTimeout(
                         function () {
                         slowAlert(tactiveRegion, c*ttimeRegion/speedReplay); 
-                        $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+i+" :: "+obj_trackdata.data.length+" Records"); 
+                        $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records"); 
                         }, 
                         tcounter*ttimeRegion/speedReplay
                       );
