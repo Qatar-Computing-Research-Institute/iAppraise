@@ -69,10 +69,10 @@ $(function(){
       width = elem.width()
       height = elem.height()    
       //console.log("Creating shadow for object:" + JSON.stringify(elem)+" at ");
-      console.log("Created object at:" + x+","+ y + ":"+ elem.width() + ","+ elem.height()+"::"+elem.attr("id"));
+      console.log("Created object at:" + x+","+ y + ":"+ elem.width() + ","+ elem.height()+"::"+elem.attr("id")+"::"+elem.text());
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
-      shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:elem}');
+      shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:'+elem.text()+'}');
       new eyetrackObject(elem);
       $("#eyedatamap").val(JSON.stringify(shadows)); 
   });
@@ -415,7 +415,7 @@ function slowAlert(d,i) {
 
         $("#sscore").val($("#output").text());
         var eval = Math.round(Math.abs($("#sscore").val() - $("#hscore").val())/10);
-
+	if(1==0)
         switch (eval) {
         case 0: //$("#feedback").text("** Your Score is great! The actual score is "+Math.round($("#hscore").val()));
                 $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");

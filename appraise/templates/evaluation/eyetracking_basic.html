@@ -26,8 +26,8 @@
 <div class="row">
 <div class="span5" id="divsrc" >
 {% if game_type != "src" %}
-<small>Source</small>
-<blockquote style="background-color: #33333A; font-size: 22.5px;"><br/>
+<small>Translation</small>
+<blockquote style="background-color: #33333A; font-size: 26.5px;"><br/>
 <p><strong><div id="divsrc1" class="eyeTracking" style="direction:ltr;">{{source_text.1}}</div></strong><br/>
  </p>
 {% endif %}
@@ -35,9 +35,9 @@
 </div>
 <div class="span5 offset1" id="divref" class="eyeTracking" >
 {% if game_type != "tgt" %}
-<small>Translation</small>
-<blockquote style="background-color: #33333A; font-size: 28.5px;"><br/>
- <p><strong><div id="divtrn0" class="eyeTracking" style="direction:rtl;">{{translation.0}}</div></strong><br/>
+<small>Reference</small>
+<blockquote style="background-color: #33333A; font-size: 26.5px;"><br/>
+ <p><strong><div id="divtrn0" class="eyeTracking" style="direction:ltr;">{{translation.0}}</div></strong><br/>
  </p>
 {% endif %}
 </blockquote>
@@ -51,14 +51,16 @@
 
 <div class="actions">
 <!--  slider css/js-->
- <input type="text" data-slider="true" value="50" data-slider-range="0,100" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"><span class="output" id="output"></span>
+ <input type="text" data-slider="true" value="1" data-slider-range="0,2" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"><span class="output" id="output"></span>
  <script>
   $("[data-slider]")
     .bind("slider:ready slider:changed", function (event, data) {
       if($('button.btn').text() != ' Next')
-      $(this)
-        .nextAll(".output:first")
-          .html(data.value.toFixed(0));
+        switch(data.value.toFixed(0)) {
+          case "0":  $(this).nextAll(".output:first").html(" completely misleading"); break;
+          case "2":  $(this).nextAll(".output:first").html(" helpful in this situation"); break;
+          default: $(this).nextAll(".output:first").html(" doubtful people will understand it"); 
+        }
     });
   </script> <span style="color: #f00; font-size: 16px;" class="feedback" id="feedback"></span>
 <input id="eyedata" name="eyedata" type="hidden" value="" />
