@@ -21,7 +21,7 @@ scripts
 Related publications
 ====================
 
-   	F. Guzman, A. Abdelali, H. Sajjad, I. Temnikova, and S. Vogel, "How do Humans Evaluate Machine Translation", The Proceedings of the Tenth Workshop on Statistical Machine Translation WMT2015. 17-18 September 2015, Lisbon, Portugal  [PDF] [BibTeX]
+F. Guzman, A. Abdelali, H. Sajjad, I. Temnikova, and S. Vogel, "How do Humans Evaluate Machine Translation", The Proceedings of the Tenth Workshop on Statistical Machine Translation WMT2015. 17-18 September 2015, Lisbon, Portugal  [PDF] [BibTeX]
 
 Contacts
 =========
