@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="alert alert-info">
+  <strong id="task_progress">{{task_progress}}</strong>
+</div>
+
+<div id="canvasWrapper" style="position:fixed; top:40px; right: 900px;">
+    <canvas id="myCanvas" width="100" height="100" style="opacity: 0.4;" style="border:1px solid #ffe629;"><p>Your browser doesn't support canvas.</p></canvas>
+</div>
+
+<div id="RWrapper" style="position:fixed; top:200px; right: 600px;">
+    <canvas id="myRCanvas" width="40" height="20" style="opacity: 0.4;" style="border:1px solid #d3d3d3;"><p>Your browser doesn't support canvas.</p></canvas>
+</div>
+
+<div class="container">
+{% if description %}
+<div class="row">
+<div class="span11">
+<p>{{description}}</p>
+</div>
+</div>
+{% endif %}
+
+<div class="row">
+<div class="span11" id="divtrn" >
+<small>Translation</small>
+<blockquote style="background-color:#ffcccc; font-size: 22.5px;"><strong>
+<br>
+<p><div id="divtrn0" class="eyeTracking" align="right">{{translation.0}}</div><br/></p></strong>
+</blockquote>
+</div>
+</div>
+
+
+<div class="row">
+
+<div class="span5" id="divsrc" >
+{% if game_type != "tgt" %}
+<small>Source</small>
+<blockquote style="background-color: #ccffcc; font-size: 22.5px;"><br/>
+<p><div id="divsrc0" style="color:#757473;" class="eyeTracking" align="right">{% if source_text.0 %}{{source_text.0}} {% endif %}</div><br/>
+   <strong><div id="divsrc1" class="eyeTracking" align="right">{{source_text.1}}</div></strong><br/>
+   <div id="divsrc2" style="color:#757473;" class="eyeTracking" align="right">{% if source_text.2 %} {{source_text.2}}{% endif %}</div><br/>
+ </p>
+{% endif %}
+</blockquote>
+</div>
+<div class="span5 offset1" id="divref" class="eyeTracking" >
+{% if game_type != "src" %}
+<small>Reference</small>
+<blockquote style="background-color: #BCE8F1; font-size: 22.5px;"><br/>
+ <p><div id="divref0" style="color:#757473;" class="eyeTracking">{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div><br/>
+   <strong><div id="divref1" class="eyeTracking">{{reference_text.1}}</div></strong><br/>
+   <div id="divref2" style="color:#757473;" class="eyeTracking">{% if reference_text.2 %} {{reference_text.2}}{% endif %}</div><br/>
+ </p>
+{% endif %}
+</blockquote>
+</div>
+</div>
+
+<form action="{{action_url}}" method="post" id="myform">
+
+<input name="item_id" type="hidden" value="{{item_id}}" />
+<input name="now" type="hidden" value="{{now}}" />
+
+<div class="actions">
+<!--  slider css/js-->
+ <input type="text" data-slider="true" value="50" data-slider-range="0,100" data-slider-step="1" data-slider-highlight="true" data-slider-theme="volume"><span class="output" id="output"></span>
+ <script>
+  $("[data-slider]")
+    .bind("slider:ready slider:changed", function (event, data) {
+      if($('button.btn').text() != ' Next')
+      $(this)
+        .nextAll(".output:first")
+          .html(data.value.toFixed(0));
+    });
+  </script> <span style="color: #f00; font-size: 16px;" class="feedback" id="feedback"></span>
+<input id="eyedata" name="eyedata" type="hidden" value="" />
+<input id="sscore" name="sscore" type="hidden" value="" />
+<input id="task_name" name="task_name" type="hidden" value="{{task_name}}" />
+<input id="task_progress" name="task_progress" type="hidden" value="{{task_progress}}" />
+<input id="eyedatamap" name="eyedatamap" type="hidden" value=""/>
+<input id="eyedatafull" name="eyedatafull" type="hidden" value=""/>
+<input id="hscore" name="hscore" type="hidden" value="{{hscore}}" />
+<br> <button class="btn" name="submit_button" accesskey="1" type="button" onClick="submitForm();"><i class="icon-ok"></i> Submit</button> 
+  &nbsp;
+</div>
+
+</form>
+
+</div>
+
+{% endblock %}
