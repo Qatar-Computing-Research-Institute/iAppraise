@@ -4,14 +4,17 @@ CONTENT:
 ========
 README.md: this file.
 
-iAppraise uses Appraise platform to collect users evaluation as well as eye information during the evaluation. 
+iAppraise uses Appraise platform to collect users evaluation as well as eye information during the evaluation.
+
 To setup iAppraise you need:
-	- A computing running Microsoft Windows 7/8 or MacOS
-	- Eyetribe eyetracker https://theeyetribe.com/products/
-	- VirtualBox https://www.virtualbox.org/wiki/Downloads
-	- Nodejs https://nodejs.org/en/
+
+- A computing running Microsoft Windows 7/8 or MacOS
+- Eyetribe eyetracker https://theeyetribe.com/products/
+- VirtualBox https://www.virtualbox.org/wiki/Downloads
+- Nodejs https://nodejs.org/en/
 	
 Setting up iAppraise, requires:
+
 1. setup Eyetribe device 
 2. Install the Virtual Box
 3. Run the vagrant script to download and start Appraise server on the virtual box
@@ -19,21 +22,21 @@ Setting up iAppraise, requires:
 5. Open the browser on http://localhost:8000/ 
 
 
-appraise
-=========
+Folders content:
+================
+
+##appraise
 Appraise server files
 
-nodejs
-=====
+##nodejs
 Nodejs interface between the Eyetribe and the Appraise server
 
-vagrant
-========
+##vagrant
 Setup files for the Virtualbox/Appraise server
 
-scripts
-========
+##scripts
 Appraise scripts
+
 
 Related publications
 ====================
