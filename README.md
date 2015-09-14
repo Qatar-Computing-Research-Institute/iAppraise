@@ -8,7 +8,7 @@ iAppraise uses Appraise platform to collect users evaluation as well as eye info
 
 To setup iAppraise you need:
 
-- A computing running Microsoft Windows 7/8 or MacOS
+- A computer running Microsoft Windows 7/8 or MacOS
 - Eyetribe eyetracker https://theeyetribe.com/products/
 - VirtualBox https://www.virtualbox.org/wiki/Downloads
 - Nodejs https://nodejs.org/en/
@@ -53,5 +53,6 @@ License
 =========
 
 Developed by:
-Qatar Computing Research Institute
+
+Qatar Computing Research Institute - 
 Arabic Language Technologies Group 
