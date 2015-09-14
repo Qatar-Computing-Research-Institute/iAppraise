@@ -1,2 +1,0 @@
-<{{task_type}}-result{% if attributes%} {{attributes|safe}}{% endif %}>
-{% for result in results %}{{result}}{% endfor %}</{{task_type}}-result>
