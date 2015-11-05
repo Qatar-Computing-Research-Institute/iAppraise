@@ -322,6 +322,7 @@ def _handle_eyetracking(request, task, items):
       'now': mktime(datetime.now().timetuple()),
       'reference_text': reference_text,
       'source_text': source_text,
+      'exp_font_size':item.exp_font_size,
       'hscore': item.translations[0][1]['hscore'],
       'task_progress': '{0:03d}/{1:03d}'.format(finished_items, total_items),
       'title': 'eyetracking game',

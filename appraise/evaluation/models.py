@@ -109,6 +109,7 @@ class EvaluationTask(models.Model):
     # This is derived from task_xml and NOT stored in the database.
     task_attributes = {}
 
+    
     description = models.TextField(
       blank=True,
       help_text="(Optional) Text describing this evaluation task.",
@@ -220,7 +221,7 @@ class EvaluationTask(models.Model):
                 self.task_attributes = {}
                 for key, value in _task_xml.attrib.items():
                     self.task_attributes[key] = value
-            
+     
             # For parse or IO errors, set self.task_attributes s.t. it gives
             # the filename and error message to the user for debugging.
             except (ParseError, IOError), msg:
@@ -476,7 +477,7 @@ class EvaluationItem(models.Model):
     reference0 = None
     reference1 = None
     translations = None
-    
+    exp_font_size = "28px"
     class Meta:
         """
         Metadata options for the EvaluationItem object model.
@@ -518,7 +519,14 @@ class EvaluationItem(models.Model):
                 _item_xml = fromstring(self.item_xml)
                 
                 self.attributes = _item_xml.attrib
-                
+		self.task.task_xml.open()
+		_task_xml = fromstring(self.task.task_xml.read())
+                self.task.task_xml.close()
+                if "exp_font_size" in _task_xml.attrib:
+                  self.exp_font_size = _task_xml.attrib['exp_font_size'];
+                else:
+                  self.exp_font_size = "28px"
+                                
                 _source = _item_xml.find('source')
                 if _source is not None:
                     self.source = (_source.text, _source.attrib)
@@ -540,7 +548,6 @@ class EvaluationItem(models.Model):
                 if _reference is not None:
                     self.reference1 = (_reference.text, _reference.attrib)
                 self.translations = []
-
                 for _translation in _item_xml.iterfind('translation'):
                     self.translations.append((_translation.text,
                       _translation.attrib))

@@ -24,16 +24,35 @@
 {% endif %}
 
 <div class="row">
+<div class="span11" id="divref" >
+<small>Reference</small>
+<blockquote style="background-color:#33333A; font-size: {% if exp_font_size %}{{exp_font_size}}{%else %}60px{%endif%};"><strong>
+<br>
+<p><div id="divref" class="eyeTracking" style="direction:rtl;">{{source_text.1}}</div><br/></p></strong>
+</blockquote>
+</div>
+</div>
+
+<div class="container">
+{% if description %}
+<div class="row">
+<div class="span11">
+<p>{{description}}</p>
+</div>
+</div>
+{% endif %}
+
+<div class="row">
 <div class="span11" id="divtrn" >
 <small>Translation</small>
-<blockquote style="background-color:#33333A; font-size: 28.5px;"><strong>
+<blockquote style="background-color:#33333A; font-size: {% if exp_font_size %}{{exp_font_size}}{%else %}60px{%endif%};"><strong>
 <br>
 <p><div id="divtrn0" class="eyeTracking" style="direction:rtl;">{{translation.0}}</div><br/></p></strong>
 </blockquote>
 </div>
 </div>
 
-
+<!--
 <div class="row">
 
 <div class="span5" id="divsrc" >
@@ -59,6 +78,7 @@
 </blockquote>
 </div>
 </div>
+-->
 
 <form action="{{action_url}}" method="post" id="myform">
 
