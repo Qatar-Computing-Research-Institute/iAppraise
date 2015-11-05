@@ -110,7 +110,7 @@
   <br/>
   <span name="replayBlc" id="replayBlc" style="display: none; padding-top: 4px;" valing="center">
   <button class="btn" name="view_button" id="view_button"  accesskey="1" type="button" onclick="viewForm();"><i class="icon-ok"></i>View</button> &nbsp; 
-    Speed: <select id="speedlist" style="margin-bottom:4px; margin-top:4px;">
+    Speed: <select id="speedlist" style="margin-bottom:4px; margin-top:4px;" onchange="stopReplay();">
       <option value="1">x1</option>
       <option value="2">x2</option>
       <option value="3">x3</option>
@@ -118,7 +118,7 @@
       <option value="5">x5</option>    
       <option value="10" selected>x10</option>
     </select>
-    Data: <select id="datalist" style="margin-bottom:4px; margin-top:4px;">
+    Data: <select id="datalist" style="margin-bottom:4px; margin-top:4px;" onchange="stopReplay();">
       <option value="div">div</option>
       <option value="words" selected>word</option>
       <option value="left">left</option>

@@ -1,8 +1,10 @@
 var activeRegion = 0;
 var timeRegion = 0;
 var eyeTribeData = [];
+var timeouts =[];
 var eyeTribeActive = 0;
 var eyeTrackReplay = 0;
+var stoppedReplay = 0;
 var counter = 0;
 var mouseX = 0;
 var mouseY = 0;
@@ -281,7 +283,16 @@ function ChangeStatus() {
 function delayedAlert() {
   timeoutID = window.setTimeout(slowAlert, 4000);
 }
+function stopReplay(){
 
+  stoppedReplay =1;
+  for (var i=0; i<timeouts.length; i++) {
+    clearTimeout(timeouts[i]);
+  }
+  timeouts.length=0; // clear the array  
+  $("#view_button").prop('disabled', false);
+
+}
 function slowAlert(d,i) {
   $(".eyeTrackingWord").css("background","transparent");
   $(".eyeTracking").css("background","transparent");            
@@ -291,11 +302,15 @@ function slowAlert(d,i) {
 
 
   function viewForm() {
+
     var obj_trackdata;
     var milliseconds = 1000;
     var tcounter = 0;
     var startTime = 0;
+    stoppedReplay = 0;
+
     //alert ($("#trackdata").val());
+    $("#view_button").prop('disabled', true);
     eyeTribeActive = 1;
     speedReplay = $('#speedlist option:selected').val();
     $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed "+tcounter);
@@ -309,6 +324,8 @@ function slowAlert(d,i) {
            if(tcounter ==0)
                 startTime   = object.time;
 
+
+
            tcounter= tcounter+1;
 
            ttimeRegion   = (object.time-startTime)/100;
@@ -319,7 +336,7 @@ function slowAlert(d,i) {
            switch($('#datalist option:selected').val()) {
             case 'left': 
                   var obj = object.data.values.frame.lefteye.avg;
-                  window.setTimeout(function () {
+                  window.setTimeout(function () {  
                                                     var b = myCanvasMove(obj.x,obj.y);
                                                     $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records");
                                                     console.log("Processing "+obj.x+":"+obj.y+" From data");  
@@ -358,13 +375,13 @@ function slowAlert(d,i) {
                   tactiveRegion = object.Region;
                   $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed "+tcounter+" time:"+c*ttimeRegion/speedReplay);
                   if(tactiveRegion.indexOf("_")>1)
-                    window.setTimeout(
+                    timeouts.push(window.setTimeout(
                         function () {
                         slowAlert(tactiveRegion, c*ttimeRegion/speedReplay); 
                         $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records"); 
                         }, 
                         tcounter*ttimeRegion/speedReplay
-                      );
+                      ));
                 break;
 
             default: 
@@ -381,6 +398,7 @@ function slowAlert(d,i) {
         });
 
     });
+    //$("#view_button").prop('disabled', false);
   }
     
   function ReplayStatus() {
@@ -392,6 +410,7 @@ function slowAlert(d,i) {
       $("#myCanvas").width(0);
       $("#myRCanvas").width(0);      
       $("#replayEyeTrack").text("Replay on");
+      $("#view_button").prop('disabled', false);
 
     } else {
 
@@ -399,6 +418,9 @@ function slowAlert(d,i) {
       $("#myCanvas").width(100);
       //$("#myRCanvas").width(100);
       $("#replayEyeTrack").text("Replay off");
+      $("#view_button").prop('disabled', true);
+
+
     }
 
   }
@@ -456,6 +478,7 @@ function slowAlert(d,i) {
         //$('.cd-popup').addClass('is-visible');
          $("#eyedata").val(eyeTribeData);
          $("#eyedatamap").val($("#eyedatamap").val());
+         $("#view_button").prop('disabled', false);
          $('#submit_stop_button').html('<i class="icon-ok"></i> Resume');
          document.getElementById('replayBlc').style.display = 'block';
       } else
