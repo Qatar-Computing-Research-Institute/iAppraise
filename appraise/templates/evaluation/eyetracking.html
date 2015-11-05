@@ -45,7 +45,11 @@
 <div class="row">
 <div class="span11" id="divtrn" >
 <small>Translation</small>
+<<<<<<< HEAD
 <blockquote style="background-color:#33333A; font-size: {% if exp_font_size %}{{exp_font_size}}{%else %}60px{%endif%};"><strong>
+=======
+<blockquote style="background-color:#33333A; font-size: 40px;"><strong>
+>>>>>>> 7f951ef4e89cce8484470f8c275e20c64a86b0cb
 <br>
 <p><div id="divtrn0" class="eyeTracking" style="direction:rtl;">{{translation.0}}</div><br/></p></strong>
 </blockquote>
@@ -57,7 +61,7 @@
 
 <div class="span5" id="divsrc" >
 {% if game_type != "tgt" %}
-<small>Source</small>
+<small>Reference</small>
 <blockquote style="background-color: #33333A; font-size: 28.5px;"><br/>
 <p><div id="divsrc0" style="direction:rtl;" class="eyeTracking eyeTrackingContext" >{% if source_text.0 %}{{source_text.0}} {% endif %}</div><br/>
    <strong><div id="divsrc1" class="eyeTracking" style="direction:rtl;">{{source_text.1}}</div></strong><br/>
@@ -68,7 +72,7 @@
 </div>
 <div class="span5 offset1" id="divref" class="eyeTracking" >
 {% if game_type != "src" %}
-<small>Reference</small>
+<small>Source</small>
 <blockquote style="background-color: #33333A; font-size: 22.5px;"><br/>
  <p><div id="divref0" class="eyeTracking eyeTrackingContext">{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div><br/>
    <strong><div id="divref1" class="eyeTracking">{{reference_text.1}}</div></strong><br/>
