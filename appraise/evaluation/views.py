@@ -276,7 +276,7 @@ def _handle_eyetracking(request, task, items):
         print("** SScore  : "+str(submit_sscore))
         print("** HScore  : "+str(submit_hscore))      
         # The form is only valid if all variables could be found.
-        form_valid = all((item_id, now_timestamp, submit_eyedata, submit_sscore))
+        form_valid = all((item_id, now_timestamp, submit_eyedata, submit_sscore,submit_eyedatamap))
     
     # If the form is valid, we have to save the results to the database.
     if form_valid:

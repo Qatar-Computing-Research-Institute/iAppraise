@@ -336,22 +336,22 @@ function slowAlert(d,i) {
            switch($('#datalist option:selected').val()) {
             case 'left': 
                   var obj = object.data.values.frame.lefteye.avg;
-                  window.setTimeout(function () {  
+                  timeouts.push(window.setTimeout(function () {  
                                                     var b = myCanvasMove(obj.x,obj.y);
                                                     $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records");
                                                     console.log("Processing "+obj.x+":"+obj.y+" From data");  
                                                 }, 
-                                                tcounter*ttimeRegion/speedReplay);
+                                                tcounter*ttimeRegion/speedReplay));
                   
                 break;
             case 'right': 
                   var obj = object.data.values.frame.righteye.avg;
-                  window.setTimeout(function () {
+                  timeouts.push(window.setTimeout(function () {
                                                     var b = myCanvasMove(obj.x,obj.y);
                                                     $("#feedback").text("Running at "+$('#speedlist option:selected').text()+" speed!!"+" :: "+(i+1)+" :: "+obj_trackdata.data.length+" Records");
                                                     console.log("Processing "+obj.x+":"+obj.y+" From data");  
                                                 }, 
-                                                tcounter*ttimeRegion/speedReplay);
+                                                tcounter*ttimeRegion/speedReplay));
                   
                 break;
             case 'avg': 
@@ -359,7 +359,7 @@ function slowAlert(d,i) {
                   var obj = object.data.values.frame.avg;
                   var objR = object.data.values.frame.righteye.avg;
                   var objL = object.data.values.frame.lefteye.avg;
-                  window.setTimeout(function () {
+                  timeouts.push(window.setTimeout(function () {
                                                     var b = myCanvasMove(obj.x,obj.y);
                                                     var r = myCanvasMoveR(objR.x,objR.y);
                                                     var l = myCanvasMoveL(objL.x,objL.y);
@@ -368,7 +368,7 @@ function slowAlert(d,i) {
                                                     if(tactiveRegion.indexOf("_")>1)
                                                     slowAlert(tactiveRegion, c*ttimeRegion/speedReplay);  
                                                 }, 
-                                                tcounter*ttimeRegion/speedReplay);
+                                                tcounter*ttimeRegion/speedReplay));
                 break;
                 
             case 'words': 
@@ -386,12 +386,12 @@ function slowAlert(d,i) {
 
             default: 
                   tactiveRegion = object.Region;
-                  window.setTimeout(
+                  timeouts.push(window.setTimeout(
                     function () {
                       slowAlert(tactiveRegion, c*ttimeRegion/speedReplay);
                     }, 
                     tcounter*ttimeRegion/speedReplay
-                   );
+                   ));
           }
             //$("#"+activeRegion).css("background","#ffeeaa");
             prevTime = ttimeRegion;
