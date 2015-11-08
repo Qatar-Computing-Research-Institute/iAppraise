@@ -666,11 +666,30 @@ class EvaluationResult(models.Model):
             return self.export_to_three_way_ranking_xml()
 
         elif _task_type == 'Eyetracking game':
-            return self.export_to_quality_checking_xml()
+            return self.export_to_eyetracking_xml()
         elif _task_type == 'Eyetracking basic game':
-            return self.export_to_quality_checking_xml()
+            return self.export_to_eyetracking_xml()
  
     def export_to_quality_checking_xml(self):
+        """
+        Renders this EvaluationResult as Quality Checking XML String.
+        """
+        template = get_template('evaluation/result_quality_checking.xml')
+        
+        _attr = self.item.attributes.items()
+        attributes = ' '.join(['{}="{}"'.format(k, v) for k, v in _attr])
+        
+        context = {
+          'attributes': attributes,
+          'duration': '{}'.format(self.duration),
+          'result': self.results,
+          'skipped': self.results is None,
+          'user': self.user,
+        }
+        
+        return template.render(Context(context))
+
+    def export_to_eyetracking_xml(self):
         """
         Renders this EvaluationResult as Quality Checking XML String.
         """

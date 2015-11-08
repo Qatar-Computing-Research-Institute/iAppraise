@@ -4,6 +4,7 @@ Project: Appraise evaluation system
  Author: Christian Federmann <cfedermann@gmail.com>
 """
 import logging
+#import json
 
 from collections import Counter
 from datetime import datetime, date
@@ -61,7 +62,7 @@ def _save_results(item, user, duration, raw_result):
     Creates or updates the EvaluationResult for the given item and user.
     """
     LOGGER.debug('item: {}, user: {}, duration: {}, raw_result: {}'.format(
-      item, user, duration, raw_result.encode('utf-8')))
+      item, user, duration, raw_result))
     
     _existing_result = EvaluationResult.objects.filter(item=item, user=user)
     
@@ -293,7 +294,17 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) +'","mapdata":'+str(submit_eyedatamap)+',"Eyedata":[' + str(submit_eyedata.encode("UTF-8"))+']}' # submit_button
+            result={}
+            result["task"]=submit_task_name
+            result["score"]=float(submit_sscore)
+            result["hscore"]=float(submit_hscore)
+            result["mapdata"]=submit_eyedatamap.encode("UTF-8")
+            result["eyedata"]=submit_eyedata.encode("UTF-8")
+            _raw_result = result
+            #_raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) + ', "mapdata":'+str(submit_eyedatamap).encode("UTF-8") + ', "Eyedata":[' + str(submit_eyedata).encode("UTF-8")+']}' # submit_button
+            # +'", "mapdata":'+str(submit_eyedatamap).encode("UTF-8")
+            #+ '}' 
+            #,"Eyedata":[' + str(submit_eyedata).encode("UTF-8")+']}' # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)
@@ -377,7 +388,14 @@ def _handle_eyetracking_basic(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) +'","mapdata":"'+str(submit_eyedatamap)+'","Eyedata":[' + str(submit_eyedata.encode("UTF-8"))+']}' # submit_button
+            result={}
+            result["task"]=submit_task_name
+            result["score"]=float(submit_sscore)
+            result["hscore"]=float(submit_hscore)
+            result["mapdata"]=submit_eyedatamap.encode("UTF-8")
+            result["eyedata"]=submit_eyedata.encode("UTF-8")
+            _raw_result = result # submit_button
+            #_raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) +'","mapdata":"'+str(submit_eyedatamap)+'","Eyedata":[' + str(submit_eyedata.encode("UTF-8"))+']}' # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)

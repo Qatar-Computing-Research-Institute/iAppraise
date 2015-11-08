@@ -48,7 +48,8 @@ $(function(){
       console.log("Creating shadow for object:" + elem.attr("id"));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
-      shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:div}');
+      //shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:div}');
+      shadows.push(new shadowObject(x,y,width,height,elem.attr("id"),"div"));
       text=elem.text().split(" ")
       elem.text("")
       
@@ -98,7 +99,8 @@ $(function(){
       console.log("Created object at:" + x+","+ y + ":"+ elem.width() + ","+ elem.height()+"::"+elem.attr("id")+"::"+elem.text());
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id"),elem.text()));
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
-      shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:'+elem.text()+'}');
+      //shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:'+elem.text()+'}');
+      shadows.push(new shadowObject(x,y,width,height,elem.attr("id"),elem.text()));
       new eyetrackObject(elem);
       //$("#eyedatamap").val(JSON.stringify(shadows)); 
   });
@@ -167,7 +169,34 @@ $(function(){
   };
   //var msg_manager=document.createElement("div");
   //$(msg_manager).attr("id","msg_manager");
+  function shadowObject(x,y,w,h,id,text){
+    var self = this;
+    self.x=x;
+    self.y=y;
+    self.width=w;
+    self.height=h;
+    self.id=id;
+    self.text=text;
 
+  }
+  function gazeObject(id,x,y,zoom,scrollx,scrolly,div0_height,innerHeight,outerHeight,clientWidth,eyedata,scaling)
+  {
+     self=this;
+     self.region=id;
+     self.gazex = x;
+     self.gazey=y;
+     self.zoom = zoom;
+     self.scrollx= scrollx;
+     self.scrolly=scrolly;
+     self.div0Height= div0_height;
+     self.innerHeight=innerHeight;
+     self.outerHeight=outerHeight;
+     self.clientWidth=clientWidth;
+     self.data=eyedata;
+     self.scaling=scaling;
+     self.isViewed=false;
+   }
+     
   function eyetrackObject(elem) {  //,text
       var self = this;
       this.elem = elem;
@@ -186,12 +215,33 @@ $(function(){
      self.height = function(){return Math.round((self.elem.height()+ (parseInt(self.elem.css('padding-top'),10)+parseInt(self.elem.css('padding-bottom'),10))));} 
 
 
-      $("#myCanvas").on('handleEyeTrack',function(e,gaze) {
+      $("#myCanvas").on('handleEyeTrack',function(e,gazeObj) {
           
           self.id = $(self.elem).attr("id");
+          gaze={x:gazeObj.gazex,y:gazeObj.gazey};
+
+
           // perform hit test between bounding box 
           // and mouse coordinates
           var cTime = new Date().getTime();
+
+          /*gazeObj= new gazeObject( 
+            self.id,
+            gaze.x,
+            gaze.y,
+            cTime,
+            zoom(),
+            window.scrollX,
+            window.scrollY,
+            $('div:first').height(),
+            Math.round(window.innerHeight*getScaling()),
+            Math.round(window.outerHeight*getScaling()),
+            Math.round(document.body.clientWidth*getScaling()),
+            $("#eyedatafull").val(),
+            getScaling()));*/
+
+          //eyeTribeData.push('{"Region":"'+ self.id + '","gazeX":"'+gaze.x+ '","gazeY":"'+gaze.y+'","time":"'+cTime+'","zoom":"'+zoom()+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","data":'+$('#eyedatafull').val()+'}');   
+
           if ( self.x() <= gaze.x &&
                self.x() + self.width() >= gaze.x &&
                self.y() <= gaze.y &&
@@ -199,6 +249,8 @@ $(function(){
                  
                   // hit test succeeded, handle the gaze event!
                 $(self.elem).attr("isViewed",true);
+                gazeObj.isViewed=true;
+                gazeObj.region =self.id;
  
                   if (eyeTribeActive == 1)
                     if($(self.elem).attr("class") == "eyeTrackingWord" || $(self.elem).attr("class") == "eyeTrackingWord sampled"){
@@ -220,12 +272,14 @@ $(function(){
                   //additionalInfo = additionalInfo + ",'divoffsetLeft':'"+$("#"+self.id).offsetLeft+"','divoffsetTop':'"+$("#"+self.id).offsetTop+"'");
         
                   //eyeTribeData.push('{"Region":"'+ self.id + '","time":"'+cTime+'","mouseX":"'+mouseX+'","mouseY":"'+mouseY+'","mouseXX":"'+mouseXX+'","mouseYY":"'+mouseYY+'","ScreenHeight":"'+Math.round(screen.height*window.devicePixelRatio)+'","ScreenWidth":"'+Math.round(screen.width*window.devicePixelRatio)+'","zoom":"'+zoom()+'","ScreenX":"'+window.screenX+'","ScreenY":"'+window.screenY+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","clientHeight":"'+Math.round(document.body.clientHeight*getScaling())+'","data":'+$('#eyedatafull').val()+'}');         
-                  eyeTribeData.push('{"Region":"'+ self.id + '","gazeX":"'+gaze.x+ '","gazeY":"'+gaze.y+'","time":"'+cTime+'","zoom":"'+zoom()+'","ScrollX":"'+window.scrollX+'","ScrollY":"'+window.scrollY+'","Div_first":"'+$('div:first').height()+'","innerHeight":"'+Math.round(window.innerHeight*getScaling())+'","outerHeight":"'+Math.round(window.outerHeight*getScaling())+'","clientWidth":"'+Math.round(document.body.clientWidth*getScaling())+'","data":'+$('#eyedatafull').val()+'}');   
+                  
                   return true;
                 }
 
           
           // hit test did not succeed
+          
+
           return false;
       });
   }
@@ -253,7 +307,21 @@ $(function(){
               var objY = (obj.y - window.screenY*getScaling() - (window.outerHeight -window.innerHeight)*getScaling() )/zoom() +window.scrollY + 5.1/window.devicePixelRatio;
 
               gaze={x:objX,y:objY};
+              gazeObj= new gazeObject( 
+              null,
+              gaze.x,
+              gaze.y,
+              zoom(),
+              window.scrollX,
+              window.scrollY,
+              $('div:first').height(),
+              Math.round(window.innerHeight*getScaling()),
+              Math.round(window.outerHeight*getScaling()),
+              Math.round(document.body.clientWidth*getScaling()),
+              fullobj,
+              getScaling());
               //gaze ={x:mouseXX,y:mouseYY};
+              eyeTribeData.push(gazeObj);
 
               //myCanvasMove(gaze.x,gaze.y); 
               if (eyeTribeActive == 1) {
@@ -261,7 +329,7 @@ $(function(){
 		            $(".eyeTrackingWord").css("border","0px");
               }
               
-                $("#myCanvas").trigger('handleEyeTrack',[gaze]);
+                $("#myCanvas").trigger('handleEyeTrack',[gazeObj]);
               
           }
         }
@@ -459,7 +527,7 @@ function slowAlert(d,i) {
         //eyeTribeData.push('{"task":"car"}');
         if($('#submit_button').text()==' Submit') {
 
-        $("#eyedata").val(eyeTribeData);
+        $("#eyedata").val(JSON.stringify(eyeTribeData));
         $("#eyedatamap").val($("#eyedatamap").val());
 
         $("#sscore").val($("#output").text());
@@ -473,7 +541,10 @@ function slowAlert(d,i) {
             precision+=1;
           }
         })
+        
         precision/=total;
+        precision*=100;
+        $("#sscore").val(Math.round(precision*100)/100);
         console.log(precision);
 
 	if($('#submit_button').text!="Next")
@@ -501,7 +572,7 @@ function slowAlert(d,i) {
         }*/
         //$('.cd-popup').addClass('is-visible');
          $('#submit_button').html('<i class="icon-ok"></i> Next');
-         $("#feedback").text("Precision: " + precision*100 +" % out of " + total + " highlighted words" );
+         $("#feedback").text("Precision: " + precision +" % out of " + total + " highlighted words" );
       }
       else {
         $("#myform").submit();
@@ -516,7 +587,7 @@ function slowAlert(d,i) {
       if($('#submit_stop_button').text()==' Stop Recording') {
          eyeTrackReplay = 1;
         //$('.cd-popup').addClass('is-visible');
-         $("#eyedata").val(eyeTribeData);
+         $("#eyedata").val(JSON.stringify(eyeTribeData));
          $("#eyedatamap").val($("#eyedatamap").val());
          $("#view_button").prop('disabled', false);
          $('#submit_stop_button').html('<i class="icon-ok"></i> Resume');
