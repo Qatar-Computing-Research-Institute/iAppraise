@@ -13,6 +13,7 @@ var mouseYY=0;
 
 var isChrome= navigator.userAgent.indexOf("Chrome") != -1 ;
 var isFirefox= navigator.userAgent.indexOf("Firefox") != -1 ;
+
 var zoom=function(){return window.devicePixelRatio;};
 var getScaling=function(){ 
         if(isFirefox){
@@ -35,7 +36,8 @@ $(function(){
                     mouseYY = e.screenY;
                     mouseXX = e.screenX;
                    }
- 
+
+
   $(".eyeTracking").each(function() {
 
       elem = $(this);
@@ -49,13 +51,35 @@ $(function(){
       shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:div}');
       text=elem.text().split(" ")
       elem.text("")
+      
+      var totalsamples=  text.length;
+      var subsamples = Math.max(3,Math.min(0.2 * totalsamples,10));
+      var sampledindices =[];
+      for (j =0; j<subsamples; j++)
+      { 
+        sampledindices.push(Math.floor(Math.random()*totalsamples))
+      }
+      console.log(sampledindices)
+
+      var sampled_counter = 0
       for (word in text)
       {
           newdiv=  document.createElement("span");
-          $(newdiv).attr('class',"eyeTrackingWord");
+          if (sampledindices.indexOf(sampled_counter) !=-1)
+          {
+            $(newdiv).attr('class',"eyeTrackingWord sampled");
+            console.log("Sampled")
+
+          }
+          else
+          {
+            $(newdiv).attr('class',"eyeTrackingWord");
+          }
           $(newdiv).attr('id',elem.attr("id")+"_"+word);
+          $(newdiv).attr('isViewed',false);
           $(newdiv).text(text[word]+" ");
           elem.append(newdiv);
+          sampled_counter ++;
           //elem.append(" ");
       }
      
@@ -76,8 +100,10 @@ $(function(){
       //shadows.push(new eyetrackObject(x,y,width,height,elem.attr("id")));
       shadows.push('{x:'+x+',y:'+y+',width:'+width+',height:'+height+',id:'+elem.attr("id")+',text:'+elem.text()+'}');
       new eyetrackObject(elem);
-      $("#eyedatamap").val(JSON.stringify(shadows)); 
+      //$("#eyedatamap").val(JSON.stringify(shadows)); 
   });
+
+  $("#eyedatamap").val(JSON.stringify(shadows));
 
   var myCanvasDraw = function( ){
       if(eyeTribeActive == 1) {
@@ -148,7 +174,7 @@ $(function(){
       
       //self.x = function(){return self.elem.offset().left - parseInt(self.elem.css('padding-left'),10)*zoom(); }
       //self.y = function(){return self.elem.offset().top - parseInt(self.elem.css('padding-top'),10)*zoom();}
-      $("#eyedatamap").val(JSON.stringify(shadows));
+      
 
       self.x = function(){return self.elem.offset().left;  - parseInt(self.elem.css('padding-left'),10)}
       self.y = function(){return self.elem.offset().top  - parseInt(self.elem.css('padding-top'),10);}
@@ -156,8 +182,8 @@ $(function(){
 //      self.width=function(){return Math.round((self.elem.width() +( (parseInt(self.elem.css('padding-left'),10)+parseInt(self.elem.css('padding-right'),10))*zoom())));}
 //      self.height = function(){return Math.round((self.elem.height() +( (parseInt(self.elem.css('padding-top'),10)+parseInt(self.elem.css('padding-bottom'),10))*zoom())));}
       
- self.width=function(){return Math.round((self.elem.width()+ (parseInt(self.elem.css('padding-left'),10)+parseInt(self.elem.css('padding-right'),10))));}
- self.height = function(){return Math.round((self.elem.height()+ (parseInt(self.elem.css('padding-top'),10)+parseInt(self.elem.css('padding-bottom'),10))));} 
+     self.width=function(){return Math.round((self.elem.width()+ (parseInt(self.elem.css('padding-left'),10)+parseInt(self.elem.css('padding-right'),10))));}
+     self.height = function(){return Math.round((self.elem.height()+ (parseInt(self.elem.css('padding-top'),10)+parseInt(self.elem.css('padding-bottom'),10))));} 
 
 
       $("#myCanvas").on('handleEyeTrack',function(e,gaze) {
@@ -172,9 +198,10 @@ $(function(){
                self.y() + self.height() >= gaze.y) {
                  
                   // hit test succeeded, handle the gaze event!
+                $(self.elem).attr("isViewed",true);
  
                   if (eyeTribeActive == 1)
-                    if($(self.elem).attr("class") == "eyeTrackingWord"){
+                    if($(self.elem).attr("class") == "eyeTrackingWord" || $(self.elem).attr("class") == "eyeTrackingWord sampled"){
                       $(self.elem).css("background","#F09E7E");
                       $(self.elem).css("border","1px solid #666");
                       //myRMove(self.x(),self.y(),self.height(), self.width());
@@ -437,8 +464,20 @@ function slowAlert(d,i) {
 
         $("#sscore").val($("#output").text());
         var eval = Math.round(Math.abs($("#sscore").val() - $("#hscore").val())/10);
-	if(1==0)
-        switch (eval) {
+        var precision=0; 
+        var total=$(".sampled").length
+        $(".sampled").each(function () {
+          // we go over all sampled words
+          elem = $(this);
+          if (elem.attr('isviewed')=="true"){
+            precision+=1;
+          }
+        })
+        precision/=total;
+        console.log(precision);
+
+	if($('#submit_button').text!="Next")
+        /*switch (eval) {
         case 0: //$("#feedback").text("** Your Score is great! The actual score is "+Math.round($("#hscore").val()));
                 $("#feedback").html("<img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'><img src='/appraise/files/img/star.jpg'>");
           break;
@@ -459,9 +498,10 @@ function slowAlert(d,i) {
           break;
         default: //$("#feedback").text("** Your are loosing it!!! The actual score is "+Math.round($("#hscore").val()));
                 $("#feedback").html("<img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'><img src='/appraise/files/img/estar.jpg'>");
-        }
+        }*/
         //$('.cd-popup').addClass('is-visible');
          $('#submit_button').html('<i class="icon-ok"></i> Next');
+         $("#feedback").text("Precision: " + precision*100 +" % out of " + total + " highlighted words" );
       }
       else {
         $("#myform").submit();
@@ -485,7 +525,7 @@ function slowAlert(d,i) {
       if($('#submit_stop_button').text()==' Resume'){
         $('#submit_stop_button').html('<i class="icon-ok"></i> Stop Recording');
         $('#submit_button').html('<i class="icon-ok"></i> Submit');
-         $("#feedback").text("");
+         
         document.getElementById('replayBlc').style.display = 'none';
         $("#myform").onsubmit = function() {
           return false;
