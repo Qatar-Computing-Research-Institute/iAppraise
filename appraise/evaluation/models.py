@@ -526,7 +526,13 @@ class EvaluationItem(models.Model):
                   self.exp_font_size = _task_xml.attrib['exp_font_size'];
                 else:
                   self.exp_font_size = "28px"
-                                
+                
+                if "source-language" in _task_xml.attrib:
+                    self.srclang = _task_xml.attrib['source-language'];
+
+                if "target-language" in _task_xml.attrib:
+                    self.trglang = _task_xml.attrib['target-language'];
+                    
                 _source = _item_xml.find('source')
                 if _source is not None:
                     self.source = (_source.text, _source.attrib)

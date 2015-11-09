@@ -334,6 +334,8 @@ def _handle_eyetracking(request, task, items):
       'reference_text': reference_text,
       'source_text': source_text,
       'exp_font_size':item.exp_font_size,
+      'srclang':item.srclang,
+      'trglang':item.trglang,
       'hscore': item.translations[0][1]['hscore'],
       'task_progress': '{0:03d}/{1:03d}'.format(finished_items, total_items),
       'title': 'eyetracking game',
