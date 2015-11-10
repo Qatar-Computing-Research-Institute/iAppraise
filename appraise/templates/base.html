@@ -24,7 +24,7 @@
     <!-- -->
     <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet">
     <script src="{{ STATIC_URL }}js/jquery-1.10.2.js"></script>
-    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <script src="{{STATIC_URL}}js/socket.io.js"></script>
     <script src="{{ STATIC_URL }}js/eyetracking.js"></script>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -98,7 +98,7 @@
                   <li><a href="{% url appraise.views.password_change %}">Change password</a></li>
                   <li><a href="{% url appraise.views.logout %}">Logout "{{user.username}}"</a></li>
                   <li><a onclick="ChangeStatus();" id="updateEyeTrack">EyeTracking On</a></li>
-                  <li><a onclick="ReplayStatus();" id="replayEyeTrack">Replay Off</a></li>
+                  <!--li><a onclick="ReplayStatus();" id="replayEyeTrack">Replay Off</a></li-->
                 </ul>
               </li>
 

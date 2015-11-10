@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<p><br><br><br><br></p>
 <div class="xalert xalert-info">
   <strong id="task_progress">{{task_progress}}</strong>
 </div>
@@ -10,10 +10,10 @@
     <canvas id="myCanvas" width="100" height="100" style="opacity: 0.4;" style="border:1px solid #ffe629;"><p>Your browser doesn't support canvas.</p></canvas>
 </div>
 
+
 <div id="RWrapper" style="position:fixed; top:200px; right: 600px;">
     <canvas id="myRCanvas" width="40" height="20" style="opacity: 0.4;" style="border:1px solid #d3d3d3;"><p>Your browser doesn't support canvas.</p></canvas>
 </div>
-
 <div class="container">
 {% if description %}
 <div class="row">
@@ -24,61 +24,25 @@
 {% endif %}
 
 <div class="row">
-<div class="span11" id="divref" >
-<small>Reference</small>
-<blockquote style="background-color:#33333A; font-size: {% if exp_font_size %}{{exp_font_size}}{%else %}60px{%endif%};"><strong>
-<br>
-<p><div id="divref" class="eyeTracking" style="direction:{% if trglang != "ar" %}ltr{%else%}rtl{%endif%};">{{source_text.1}}</div><br/></p></strong>
-</blockquote>
-</div>
-</div>
-
-<div class="container">
-{% if description %}
-<div class="row">
-<div class="span11">
-<p>{{description}}</p>
-</div>
-</div>
-{% endif %}
-
-<div class="row">
-<div class="span11" id="divtrn" >
-<small>Translation</small>
-<blockquote style="background-color:#33333A; font-size: {% if exp_font_size %}{{exp_font_size}}{%else %}60px{%endif%};"><strong>
-<br>
-<p><div id="divtrn0" class="eyeTracking" style="direction:{% if trglang != "ar" %}ltr{%else%}rtl{%endif%};">{{translation.0}}</div><br/></p></strong>
-</blockquote>
-</div>
-</div>
-
-<!--
-<div class="row">
-
 <div class="span5" id="divsrc" >
-{% if game_type != "tgt" %}
-<small>Reference</small>
-<blockquote style="background-color: #33333A; font-size: 28.5px;"><br/>
-<p><div id="divsrc0" style="direction:rtl;" class="eyeTracking eyeTrackingContext" >{% if source_text.0 %}{{source_text.0}} {% endif %}</div><br/>
-   <strong><div id="divsrc1" class="eyeTracking" style="direction:rtl;">{{source_text.1}}</div></strong><br/>
-   <div id="divsrc2" style="direction:rtl;" class="eyeTracking eyeTrackingContext">{% if source_text.2 %} {{source_text.2}}{% endif %}</div><br/>
+{% if game_type != "src" %}
+<small>Source</small>
+<blockquote style="background-color: #33333A; font-size: 22.5px;"><br/>
+<p><strong><div id="divsrc1" class="eyeTracking" style="direction:ltr;">{{source_text.1}}</div></strong><br/>
  </p>
 {% endif %}
 </blockquote>
 </div>
 <div class="span5 offset1" id="divref" class="eyeTracking" >
-{% if game_type != "src" %}
-<small>Source</small>
-<blockquote style="background-color: #33333A; font-size: 22.5px;"><br/>
- <p><div id="divref0" class="eyeTracking eyeTrackingContext">{% if reference_text.0 %}{{reference_text.0}} {% endif %}</div><br/>
-   <strong><div id="divref1" class="eyeTracking">{{reference_text.1}}</div></strong><br/>
-   <div id="divref2"  class="eyeTracking eyeTrackingContext">{% if reference_text.2 %} {{reference_text.2}}{% endif %}</div><br/>
+{% if game_type != "tgt" %}
+<small>Translation</small>
+<blockquote style="background-color: #33333A; font-size: 28.5px;"><br/>
+ <p><strong><div id="divtrn0" class="eyeTracking" style="direction:ltr;">{{translation.0}}</div></strong><br/>
  </p>
 {% endif %}
 </blockquote>
 </div>
 </div>
--->
 
 <form action="{{action_url}}" method="post" id="myform">
 
@@ -110,7 +74,7 @@
   <br/>
   <span name="replayBlc" id="replayBlc" style="display: none; padding-top: 4px;" valing="center">
   <button class="btn" name="view_button" id="view_button"  accesskey="1" type="button" onclick="viewForm();"><i class="icon-ok"></i>View</button> &nbsp; 
-    Speed: <select id="speedlist" style="margin-bottom:4px; margin-top:4px;" onchange="stopReplay();">
+    Speed: <select id="speedlist" style="margin-bottom:4px; margin-top:4px;">
       <option value="1">x1</option>
       <option value="2">x2</option>
       <option value="3">x3</option>
@@ -118,7 +82,7 @@
       <option value="5">x5</option>    
       <option value="10" selected>x10</option>
     </select>
-    Data: <select id="datalist" style="margin-bottom:4px; margin-top:4px;" onchange="stopReplay();">
+    Data: <select id="datalist" style="margin-bottom:4px; margin-top:4px;">
       <option value="div">div</option>
       <option value="words" selected>word</option>
       <option value="left">left</option>

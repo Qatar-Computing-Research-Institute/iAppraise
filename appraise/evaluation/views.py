@@ -4,6 +4,7 @@ Project: Appraise evaluation system
  Author: Christian Federmann <cfedermann@gmail.com>
 """
 import logging
+#import json
 
 from collections import Counter
 from datetime import datetime, date
@@ -61,7 +62,7 @@ def _save_results(item, user, duration, raw_result):
     Creates or updates the EvaluationResult for the given item and user.
     """
     LOGGER.debug('item: {}, user: {}, duration: {}, raw_result: {}'.format(
-      item, user, duration, raw_result.encode('utf-8')))
+      item, user, duration, raw_result))
     
     _existing_result = EvaluationResult.objects.filter(item=item, user=user)
     
@@ -276,6 +277,102 @@ def _handle_eyetracking(request, task, items):
         print("** SScore  : "+str(submit_sscore))
         print("** HScore  : "+str(submit_hscore))      
         # The form is only valid if all variables could be found.
+        form_valid = all((item_id, now_timestamp, submit_eyedata, submit_sscore,submit_eyedatamap))
+    
+    # If the form is valid, we have to save the results to the database.
+    if form_valid:
+        # Retrieve EvalutionItem instance for the given id or raise Http404.
+        current_item = get_object_or_404(EvaluationItem, pk=int(item_id))
+        
+        # Compute duration for this item.
+        now_datetime = datetime.fromtimestamp(float(now_timestamp))
+        duration = start_datetime - now_datetime
+        
+        # If "Flag Error" was clicked, _raw_result is set to "SKIPPED".
+        if submit_button == 'FLAG_ERROR':
+            _raw_result = 'SKIPPED'
+        
+        # Otherwise, for quality checking, we just pass through the value.
+        else:
+            result={}
+            result["task"]=submit_task_name
+            result["score"]=float(submit_sscore)
+            result["hscore"]=float(submit_hscore)
+            result["mapdata"]=submit_eyedatamap.encode("UTF-8")
+            result["eyedata"]=submit_eyedata.encode("UTF-8")
+            _raw_result = result
+            #_raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) + ', "mapdata":'+str(submit_eyedatamap).encode("UTF-8") + ', "Eyedata":[' + str(submit_eyedata).encode("UTF-8")+']}' # submit_button
+            # +'", "mapdata":'+str(submit_eyedatamap).encode("UTF-8")
+            #+ '}' 
+            #,"Eyedata":[' + str(submit_eyedata).encode("UTF-8")+']}' # submit_button
+        
+        # Save results for this item to the Django database.
+        _save_results(current_item, request.user, duration, _raw_result)
+    
+    # Find next item the current user should process or return to overview.
+    item = _find_next_item_to_process(items, request.user, task.random_order)
+    if not item:
+        return redirect('appraise.evaluation.views.overview')
+    
+    # Compute source and reference texts including context where possible.
+    source_text, reference_text = _compute_explicit_context_for_item(item)
+    
+    # Retrieve the number of finished items for this user and the total number
+    # of items for this task. We increase finished_items by one as we are
+    # processing the first unfinished item.
+    finished_items, total_items = task.get_finished_for_user(request.user)
+    finished_items += 1
+    
+    dictionary = {
+      'action_url': request.path,
+      'commit_tag': COMMIT_TAG,
+      'description': task.description,
+      'game_type': item.attributes['game_type'],
+      'item_id': item.id,
+      'task_name':task.task_name,
+      'now': mktime(datetime.now().timetuple()),
+      'reference_text': reference_text,
+      'source_text': source_text,
+      'exp_font_size':item.exp_font_size,
+      'srclang':item.srclang,
+      'trglang':item.trglang,
+      'hscore': item.translations[0][1]['hscore'],
+      'task_progress': '{0:03d}/{1:03d}'.format(finished_items, total_items),
+      'title': 'eyetracking game',
+      'translation': item.translations[0],
+    }
+    
+    return render(request, 'evaluation/eyetracking.html', dictionary)
+
+def _handle_eyetracking_basic(request, task, items):
+    """
+    Handler for Eyetracking game tasks.
+    
+    Finds the next item belonging to the given task, renders the page template
+    and creates an EvaluationResult instance on HTTP POST submission.
+    
+    """
+    start_datetime = datetime.now()
+    form_valid = False
+    
+    # If the request has been submitted via HTTP POST, extract data from it.
+    if request.method == "POST":
+        item_id = request.POST.get('item_id', None)
+        now_timestamp = request.POST.get('now', None)
+        submit_button = request.POST.get('submit_button', None)
+        submit_task_name = request.POST.get('task_name', None)
+        submit_task_progress = request.POST.get('task_progress', None)
+        submit_eyedata = request.POST.get('eyedata', None)
+        submit_eyedatamap = request.POST.get('eyedatamap',None)
+        submit_sscore = request.POST.get('sscore', None)
+        submit_hscore = request.POST.get('hscore', None)
+
+        print("** Submit  : "+str(submit_button))
+        print("** Progress: "+str(submit_task_progress))
+        print("** Eyedata ("+str(len(submit_eyedata))+"): "+str(submit_eyedata.encode("UTF-8")[:200])+" ...")
+        print("** SScore  : "+str(submit_sscore))
+        print("** HScore  : "+str(submit_hscore))      
+        # The form is only valid if all variables could be found.
         form_valid = all((item_id, now_timestamp, submit_eyedata, submit_sscore))
     
     # If the form is valid, we have to save the results to the database.
@@ -293,7 +390,14 @@ def _handle_eyetracking(request, task, items):
         
         # Otherwise, for quality checking, we just pass through the value.
         else:
-            _raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) +'","mapdata":"'+str(submit_eyedatamap)+'","Eyedata":[' + str(submit_eyedata.encode("UTF-8"))+']}' # submit_button
+            result={}
+            result["task"]=submit_task_name
+            result["score"]=float(submit_sscore)
+            result["hscore"]=float(submit_hscore)
+            result["mapdata"]=submit_eyedatamap.encode("UTF-8")
+            result["eyedata"]=submit_eyedata.encode("UTF-8")
+            _raw_result = result # submit_button
+            #_raw_result = '{"task":"'+str(submit_task_name)+'","score":"'+str(submit_sscore) +'","hscore":"'+str(submit_hscore) +'","mapdata":"'+str(submit_eyedatamap)+'","Eyedata":[' + str(submit_eyedata.encode("UTF-8"))+']}' # submit_button
         
         # Save results for this item to the Django database.
         _save_results(current_item, request.user, duration, _raw_result)
@@ -324,11 +428,12 @@ def _handle_eyetracking(request, task, items):
       'source_text': source_text,
       'hscore': item.translations[0][1]['hscore'],
       'task_progress': '{0:03d}/{1:03d}'.format(finished_items, total_items),
-      'title': 'eyetracking game',
+      'title': 'eyetracking basic game',
       'translation': item.translations[0],
     }
     
-    return render(request, 'evaluation/eyetracking.html', dictionary)
+    return render(request, 'evaluation/eyetracking_basic.html', dictionary)
+
 
 @login_required
 def _handle_ranking(request, task, items):
@@ -727,7 +832,10 @@ def task_handler(request, task_id):
 
     elif _task_type == 'Eyetracking game':
         return _handle_eyetracking(request, task, items)
-    
+ 
+    elif _task_type == 'Eyetracking basic game':
+        return _handle_eyetracking_basic(request, task, items)
+
     _msg = 'No handler for task type: "{0}"'.format(_task_type)
     raise NotImplementedError, _msg
 

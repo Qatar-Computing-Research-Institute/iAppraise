@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+static/js/eyetracking_orig.js
+>>>>>>> Appraise_ar
 django.pid
 lighttpd.pid
 start-server.sh
